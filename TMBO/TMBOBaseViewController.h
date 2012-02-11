@@ -1,5 +1,5 @@
 //
-//  TMBOViewController.h
+//  TMBOBaseViewController.h
 //  TMBO
 //
 //  Created by Jim Kelly on 2/8/12.
@@ -8,6 +8,6 @@
 
 #import <UIKit/UIKit.h>
 
-@interface TMBOViewController : UIViewController
-
+@interface TMBOBaseViewController : UIViewController
++ (UIColor *) colorFromHexString: (NSString *) hex;
 @end

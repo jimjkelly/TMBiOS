@@ -1,14 +1,44 @@
 //
-//  TMBOViewController.m
+//  TMBOImageViewController.m
 //  TMBO
 //
-//  Created by Jim Kelly on 2/8/12.
+//  Created by Jim Kelly on 2/9/12.
 //  Copyright (c) 2012 __MyCompanyName__. All rights reserved.
 //
 
-#import "TMBOViewController.h"
+#import "TMBOImageViewController.h"
+#import "TMBO-API.h"
 
-@implementation TMBOViewController
+@interface TMBOImageViewController()
+@property (nonatomic, strong) TMBO_API *tmbo;
+@end
+
+@implementation TMBOImageViewController
+
+@synthesize delegate = _delegate;
+@synthesize tmbo = _tmbo;
+
+
+- (TMBO_API *)tmbo {
+    if (!_tmbo) _tmbo = [[TMBO_API alloc] init];
+    return _tmbo;
+}
+
+
+
+- (void)getUploadsDidFinish:(NSDictionary *)uploads {
+    NSLog(@"uploads: %@", uploads);
+}
+
+
+
+
+
+
+
+
+
+
 
 - (void)didReceiveMemoryWarning
 {
@@ -34,6 +64,8 @@
 - (void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
+    [self.view setBackgroundColor: [[self class] colorFromHexString:@"333366"]];
+    [self.tmbo getUploadswithDelegate:self];
 }
 
 - (void)viewDidAppear:(BOOL)animated

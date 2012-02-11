@@ -1,24 +1,131 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="1.0" toolsVersion="1906" systemVersion="11A511" targetRuntime="iOS.CocoaTouch" nextObjectID="6" propertyAccessControl="none" initialViewController="2">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="1.0" toolsVersion="1938" systemVersion="11C74" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" initialViewController="zjO-pv-Ijx">
     <dependencies>
         <development defaultVersion="4200" identifier="xcode"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="902"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="933"/>
     </dependencies>
     <scenes>
         <scene sceneID="5">
             <objects>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="4" sceneMemberID="firstResponder"/>
-                <viewController id="2" customClass="TMBOViewController" sceneMemberID="viewController">
+                <viewController id="2" customClass="TMBOLoginViewController" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="3">
-                        <rect key="frame" x="0.0" y="20" width="320" height="460"/>
+                        <rect key="frame" x="0.0" y="64" width="320" height="416"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                        <subviews/>
-                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+                        <subviews>
+                            <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" minimumFontSize="17" id="wFq-sL-qxa">
+                                <rect key="frame" x="114" y="177" width="171" height="31"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                <textInputTraits key="textInputTraits"/>
+                            </textField>
+                            <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" minimumFontSize="17" id="j3l-MB-4Wh">
+                                <rect key="frame" x="114" y="214" width="171" height="31"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                <textInputTraits key="textInputTraits"/>
+                            </textField>
+                            <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" text="username:" lineBreakMode="tailTruncation" minimumFontSize="10" id="4XF-Ns-epZ">
+                                <rect key="frame" x="20" y="182" width="81" height="21"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" text="password:" lineBreakMode="tailTruncation" minimumFontSize="10" id="2GO-63-x4o">
+                                <rect key="frame" x="21" y="219" width="80" height="21"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" id="jn4-jv-YZx">
+                                <rect key="frame" x="23" y="266" width="275" height="37"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <fontDescription key="fontDescription" type="boldSystem" pointSize="15"/>
+                                <state key="normal" title="hug me and descend into madness">
+                                    <color key="titleColor" red="0.19607843459999999" green="0.30980393290000002" blue="0.52156865600000002" alpha="1" colorSpace="calibratedRGB"/>
+                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                </state>
+                                <state key="highlighted">
+                                    <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                </state>
+                                <connections>
+                                    <action selector="loginPressed:" destination="2" eventType="touchUpInside" id="6VV-LL-Ney"/>
+                                </connections>
+                            </button>
+                            <activityIndicatorView opaque="NO" contentMode="scaleToFill" style="whiteLarge" id="8Yc-WA-FMI">
+                                <rect key="frame" x="142" y="326" width="37" height="37"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                            </activityIndicatorView>
+                        </subviews>
+                        <color key="backgroundColor" red="0.0" green="0.50196081399917603" blue="0.50196081399917603" alpha="0.0" colorSpace="calibratedRGB"/>
                     </view>
+                    <navigationItem key="navigationItem" id="N6A-th-AYn"/>
+                    <connections>
+                        <outlet property="activity" destination="8Yc-WA-FMI" id="8xf-IR-kpf"/>
+                        <outlet property="password" destination="j3l-MB-4Wh" id="ZRd-Y8-IfF"/>
+                        <outlet property="username" destination="wFq-sL-qxa" id="ZJr-d0-v9L"/>
+                        <segue destination="a3f-QK-HJI" kind="modal" identifier="LoginToImages" id="hod-g9-9ul"/>
+                    </connections>
                 </viewController>
             </objects>
+            <point key="canvasLocation" x="684" y="44"/>
+        </scene>
+        <scene sceneID="2oM-Ja-RbS">
+            <objects>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="RKx-ZB-gBa" userLabel="First Responder" sceneMemberID="firstResponder"/>
+                <viewController id="a3f-QK-HJI" customClass="TMBOImageViewController" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="Qm5-6Q-Okj">
+                        <rect key="frame" x="0.0" y="20" width="320" height="460"/>
+                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                        <subviews>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" id="TkC-QQ-Xma">
+                                <rect key="frame" x="0.0" y="0.0" width="320" height="460"/>
+                                <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                            </imageView>
+                        </subviews>
+                        <color key="backgroundColor" red="0.0" green="0.50196081400000003" blue="0.50196081400000003" alpha="0.0" colorSpace="calibratedRGB"/>
+                    </view>
+                    <navigationItem key="navigationItem" id="xGj-KR-MND"/>
+                </viewController>
+            </objects>
+            <point key="canvasLocation" x="1095" y="44"/>
+        </scene>
+        <scene sceneID="q0z-5j-Nq1">
+            <objects>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="i9q-K4-eFZ" userLabel="First Responder" sceneMemberID="firstResponder"/>
+                <navigationController id="zjO-pv-Ijx" sceneMemberID="viewController">
+                    <toolbarItems/>
+                    <navigationBar key="navigationBar" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" id="hCD-4T-9Zk">
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                    </navigationBar>
+                    <nil name="viewControllers"/>
+                    <connections>
+                        <segue destination="2" kind="relationship" relationship="rootViewController" id="6dD-gz-jFo"/>
+                    </connections>
+                </navigationController>
+            </objects>
+            <point key="canvasLocation" x="158" y="44"/>
         </scene>
     </scenes>
+    <classes>
+        <class className="TMBOBaseViewController" superclassName="UIViewController">
+            <source key="sourceIdentifier" type="project" relativePath="./Classes/TMBOBaseViewController.h"/>
+        </class>
+        <class className="TMBOImageViewController" superclassName="TMBOBaseViewController">
+            <source key="sourceIdentifier" type="project" relativePath="./Classes/TMBOImageViewController.h"/>
+        </class>
+        <class className="TMBOLoginViewController" superclassName="TMBOBaseViewController">
+            <source key="sourceIdentifier" type="project" relativePath="./Classes/TMBOLoginViewController.h"/>
+            <relationships>
+                <relationship kind="outlet" name="activity" candidateClass="UIActivityIndicatorView"/>
+                <relationship kind="outlet" name="password" candidateClass="UITextField"/>
+                <relationship kind="outlet" name="username" candidateClass="UITextField"/>
+            </relationships>
+        </class>
+    </classes>
     <simulatedMetricsContainer key="defaultSimulatedMetrics">
         <simulatedStatusBarMetrics key="statusBar"/>
         <simulatedOrientationMetrics key="orientation"/>
