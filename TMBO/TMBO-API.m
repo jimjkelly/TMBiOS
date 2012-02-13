@@ -57,7 +57,7 @@ NSString const *kRETURNFORMAT = @"json";
     [request setValue:kUSERAGENT forHTTPHeaderField:@"User-Agent"];
     
     HTTPResource *httpResource = [[HTTPResource alloc] init];
-    [httpResource getDictionaryFromURL:request withStringSelector:@"loginWithUsernameResult" andDelegate:self];
+    [httpResource getDictionaryFromURL:request withStringSelector:@"loginWithUsernameResult:" andDelegate:self];
     
 }
 
@@ -78,16 +78,51 @@ NSString const *kRETURNFORMAT = @"json";
     NSURL *url = [NSURL URLWithString:urlString];
     NSMutableURLRequest *request = [[NSMutableURLRequest alloc] initWithURL:url];
     [request setValue:kUSERAGENT forHTTPHeaderField:@"User-Agent"];
+    
+    HTTPResource *httpResource = [[HTTPResource alloc] init];
+    [httpResource getDictionaryFromURL:request withStringSelector:@"getUploadsResult:" andDelegate:self];
+}
+
+
+- (void)getUploadswithDelegate:(id)delegate ofType:(NSString *)uploadType {
+    self.delegate = delegate;
+    NSString *urlString = [[NSString alloc] initWithFormat:@"%@/getuploads.%@?token=%@&type=%@", kAPIURL, kRETURNFORMAT, self.authToken, uploadType];
+    NSURL *url = [NSURL URLWithString:urlString];
+    NSMutableURLRequest *request = [[NSMutableURLRequest alloc] initWithURL:url];
+    [request setValue:kUSERAGENT forHTTPHeaderField:@"User-Agent"];
 
     HTTPResource *httpResource = [[HTTPResource alloc] init];
-    [httpResource getDictionaryFromURL:request withStringSelector:@"getUploadsResult" andDelegate:self];
+    [httpResource getDictionaryFromURL:request withStringSelector:@"getUploadsResult:" andDelegate:self];
 }
 
 - (void)getUploadsResult:(NSDictionary *)result {
-    NSLog( @"result in getUploadsResult is %@", result);
     [self.delegate performSelector: @selector(getUploadsDidFinish:) withObject:result];
 }
 
+- (UIImage *)getUIImageFromFilePath:(NSString *)filePath {
+    NSString *fullLink = [[NSString alloc] initWithFormat:@"http://thismight.be%@", filePath];
+    NSURL *url = [NSURL URLWithString:fullLink];
+    NSMutableURLRequest *request = [[NSMutableURLRequest alloc] initWithURL:url];
+    [request setValue:kUSERAGENT forHTTPHeaderField:@"User-Agent"];
+    
+    
+    NSURLResponse *response = [[NSURLResponse alloc] init];
+    NSError *error = [[NSError alloc] init];
+    return [[UIImage alloc] initWithData:[NSURLConnection sendSynchronousRequest:request returningResponse:&response error:&error]];
+}
+
+
+/*- (void)getUIImagewithDelegate:(id)delegate fromURL:(NSString *)urlString {
+    self.delegate = delegate;
+    NSURL *url = [NSURL URLWithString:urlString];
+    NSMutableURLRequest *request = [[NSMutableURLRequest alloc] initWithURL:url];
+    [request setValue:kUSERAGENT forHTTPHeaderField:@"User-Agent"];
+    
+    UIImage *image = [UIImage alloc] initWithData:[NSData dataWithContentsOfURL:request];
+    [NSData data
+    
+    [self.delegate performSelector: @selector(getUIImageDidFinish:) withObject:image];
+}*/
 
 
 

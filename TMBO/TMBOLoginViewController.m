@@ -41,7 +41,6 @@
 
 - (void)loginSucceededOnwardTittiesAndKitties {
     [self performSegueWithIdentifier:@"LoginToImages" sender:self];
-    NSLog(@"Attempted to Segue");
 }
 
 - (void)loginConnectionDidFinish:(NSNumber *)loginResult {
@@ -56,23 +55,6 @@
         NSLog(@"Error logging in");
     }
 }
-
-/*- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
-{
-	if ([segue.identifier isEqualToString:@"LoginToImages"])
-	{
-		UINavigationController *navigationController = 
-        segue.destinationViewController;
-		TMBOImageViewController 
-        *tmboImageViewController = 
-        [[navigationController viewControllers] 
-         objectAtIndex:0];
-		tmboImageViewController.delegate = self;
-	}
-}*/
-
-
-
 
 - (void)didReceiveMemoryWarning
 {
@@ -110,7 +92,6 @@
     self.activity.hidden = YES;
     
     self.navigationController.navigationBarHidden = YES;
-    //navController.navigationBar.hidden = YES;
 }
 
 - (void)viewDidAppear:(BOOL)animated

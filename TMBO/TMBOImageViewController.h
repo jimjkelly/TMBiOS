@@ -10,5 +10,6 @@
 #import "TMBOBaseViewController.h"
 
 @interface TMBOImageViewController : TMBOBaseViewController
+@property (weak, nonatomic) IBOutlet UIImageView *image;
 @property (nonatomic, assign) id delegate;
 @end

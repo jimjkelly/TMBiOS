@@ -49,8 +49,8 @@
     NSError *error;
     
     NSDictionary *result = [NSJSONSerialization JSONObjectWithData:self.responseData options:0 error:&error];
-    NSLog( @"result is %@", result);
-    
+    //NSLog( @"result is %@", result);
+
     [self.delegate performSelector: NSSelectorFromString(self.selector) withObject:result];
 }
 

@@ -12,4 +12,7 @@
 @property (nonatomic, strong) NSString *authToken;
 - (void)loginWithUsername:(NSString *)username andPassowrd:(NSString *)password withDelegate:(id)delegate;
 - (void)getUploadswithDelegate:(id)delegate;
+- (void)getUploadswithDelegate:(id)delegate ofType:(NSString *)uploadType;
+- (UIImage *)getUIImageFromFilePath:(NSString *)request;
+//- (void)getUIImagewithDelegate:(id)delegate fromURL:(NSString *)urlString;
 @end
