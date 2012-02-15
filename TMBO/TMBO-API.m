@@ -28,6 +28,51 @@ NSString const *kRETURNFORMAT = @"json";
 @synthesize showTMBO = _showTMBO;
 
 
+- (BOOL)shouldShowNSFW {
+    NSUserDefaults *prefs = [NSUserDefaults standardUserDefaults];
+    if ([[[prefs dictionaryRepresentation] allKeys] containsObject:@"showNSFW"]) {
+        NSString *savedShowNSFW = [prefs stringForKey:@"showNSFW"];
+        if (savedShowNSFW == @"NO") {
+            _showNSFW = NO;
+        } else {
+            _showNSFW = YES;
+        }
+    } else {
+        _showNSFW = YES;
+    }
+    return _showNSFW;
+}
+
+- (void)setShowNSFW:(BOOL)showNSFW {
+    NSUserDefaults *prefs = [NSUserDefaults standardUserDefaults];
+    [prefs setObject:showNSFW ? @"YES" : @"NO" forKey:@"showNSFW"];
+    [prefs synchronize];
+    _showNSFW = showNSFW;
+}
+
+- (BOOL)shouldShowTMBO {
+    NSUserDefaults *prefs = [NSUserDefaults standardUserDefaults];
+    if ([[[prefs dictionaryRepresentation] allKeys] containsObject:@"showTMBO"]) {
+        NSString *savedShowTMBO = [prefs stringForKey:@"showTMBO"];
+        if (savedShowTMBO == @"NO") {
+            _showTMBO = NO;
+        } else {
+            _showTMBO = YES;
+        }
+    } else {
+        _showTMBO = YES;
+    }
+    return _showTMBO;
+}
+
+- (void)setShowTMBO:(BOOL)showTMBO {
+    NSUserDefaults *prefs = [NSUserDefaults standardUserDefaults];
+    [prefs setObject:showTMBO ? @"YES" : @"NO" forKey:@"showTMBO"];
+    [prefs synchronize];
+    _showTMBO = showTMBO;
+}
+
+
 - (NSString *)authToken {
     if (_authToken == nil) {
         NSUserDefaults *prefs = [NSUserDefaults standardUserDefaults];
@@ -86,7 +131,21 @@ NSString const *kRETURNFORMAT = @"json";
 
 - (void)getUploadswithDelegate:(id)delegate {
     self.delegate = delegate;
-    NSString *urlString = [[NSString alloc] initWithFormat:@"%@/getuploads.%@?token=%@&", kAPIURL, kRETURNFORMAT, self.authToken];
+    
+    NSString *tmboURLArg = [[NSString alloc] initWithString:@""];
+    if (!self.shouldShowTMBO) {
+        tmboURLArg = [[NSString alloc] initWithString:@"&tmbo=0"];
+    }
+    
+    NSString *nsfwURLArg = [[NSString alloc] initWithString:@""];
+    if (!self.shouldShowNSFW) {
+        nsfwURLArg = [[NSString alloc] initWithString:@"&nsfw=0"];
+    }
+    
+    NSString *urlString = [[NSString alloc] initWithFormat:@"%@/getuploads.%@?token=%@%@%@", kAPIURL, kRETURNFORMAT, self.authToken, tmboURLArg, nsfwURLArg];
+    
+    NSLog(@"urlString: %@", urlString);
+    
     NSURL *url = [NSURL URLWithString:urlString];
     NSMutableURLRequest *request = [[NSMutableURLRequest alloc] initWithURL:url];
     [request setValue:[self getUserAgent] forHTTPHeaderField:@"User-Agent"];
@@ -98,7 +157,20 @@ NSString const *kRETURNFORMAT = @"json";
 
 - (void)getUploadswithDelegate:(id)delegate ofType:(NSString *)uploadType {
     self.delegate = delegate;
-    NSString *urlString = [[NSString alloc] initWithFormat:@"%@/getuploads.%@?token=%@&type=%@", kAPIURL, kRETURNFORMAT, self.authToken, uploadType];
+
+    NSString *tmboURLArg = [[NSString alloc] initWithString:@""];
+    if (!self.shouldShowTMBO) {
+        tmboURLArg = [[NSString alloc] initWithString:@"&tmbo=0"];
+    }
+    
+    NSString *nsfwURLArg = [[NSString alloc] initWithString:@""];
+    if (!self.shouldShowNSFW) {
+        nsfwURLArg = [[NSString alloc] initWithString:@"&nsfw=0"];
+    }
+    
+    NSString *urlString = [[NSString alloc] initWithFormat:@"%@/getuploads.%@?token=%@&type=%@%@%@", kAPIURL, kRETURNFORMAT, self.authToken, uploadType, tmboURLArg, nsfwURLArg];
+    NSLog(@"urlString: %@", urlString);
+    
     NSURL *url = [NSURL URLWithString:urlString];
     NSMutableURLRequest *request = [[NSMutableURLRequest alloc] initWithURL:url];
     [request setValue:[self getUserAgent] forHTTPHeaderField:@"User-Agent"];

@@ -39,6 +39,27 @@
     [self performSegueWithIdentifier:@"ImagesToLogin" sender:self];
 }
 
+- (IBAction)toggleNSFW:(UIButton *)sender {
+    NSLog(@"NSFW filter was set to %@", self.tmbo.shouldShowNSFW ? @"YES" : @"NO");
+    self.tmbo.showNSFW = !self.tmbo.shouldShowNSFW;
+    NSLog(@"NSFW filter is now set to %@", self.tmbo.shouldShowNSFW ? @"YES" : @"NO");
+    // Refresh the list.
+    [self.tmbo getUploadswithDelegate:self ofType:@"image"];
+}
+
+- (IBAction)toggleTMBO:(UIButton *)sender {
+    NSLog(@"TMBO filter was set to %@", self.tmbo.shouldShowTMBO ? @"YES" : @"NO");
+    self.tmbo.showTMBO = !self.tmbo.shouldShowTMBO;
+    NSLog(@"TMBO filter is now set to %@", self.tmbo.shouldShowTMBO ? @"YES" : @"NO");
+    // Refresh the list.
+    [self.tmbo getUploadswithDelegate:self ofType:@"image"];
+}
+
+- (IBAction)voteOnImage:(UIButton *)sender {
+    NSString *vote = sender.currentTitle;
+    NSLog(@"User votes %@ on photo %d", vote, [self.currentIndex intValue]);
+}
+
 - (void)setCurrentIndex:(NSNumber *)currentIndex {
     if ([currentIndex intValue] <= 0) {
         NSLog(@"Setting index to 0, as attempt was made to set to %@", currentIndex);
