@@ -350,7 +350,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				CODE_SIGN_IDENTITY = "";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: James Kelly (EH79J3W76N)";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution";
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "TMBO/TMBO-Prefix.pch";
 				INFOPLIST_FILE = "TMBO/TMBO-Info.plist";
@@ -359,7 +359,7 @@
 					"\"$(SRCROOT)/TestFlightSDK0.8.2\"",
 				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "C23F3A9A-F9A2-4683-ACAB-4285702BB7CF";
+				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "";
 				WRAPPER_EXTENSION = app;
 			};
 			name = "Ad-Hoc Distribution";

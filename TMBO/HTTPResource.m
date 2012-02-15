@@ -35,6 +35,15 @@
 
 - (void)connection:(NSURLConnection *)connection didReceiveResponse:(NSURLResponse *)response {
 	[self.responseData setLength:0];
+    NSHTTPURLResponse *httpResponse = (NSHTTPURLResponse *)response;
+    // We probably need to more aggressively interpret codes here
+    if (httpResponse.statusCode == 401) {
+        // login failure, cancel the connection and call
+        // delegate's failure
+        [connection cancel];
+        NSLog(@"Login failure");
+        [self.delegate performSelector:@selector(loginFailed)];
+    }
 }
 
 - (void)connection:(NSURLConnection *)connection didReceiveData:(NSData *)data {

@@ -20,6 +20,7 @@
 @synthesize username = _username;
 @synthesize password = _password;
 @synthesize activity = _activity;
+@synthesize loginError = _loginError;
 @synthesize tmbo = _tmbo;
 
 - (TMBO_API *)tmbo {
@@ -34,7 +35,7 @@
     [self.tmbo loginWithUsername:[self.username text]
                      andPassowrd:[self.password text]
                     withDelegate:self];
-    
+    self.loginError.hidden = YES;
     self.activity.hidden = NO;
     [self.activity startAnimating];
 }
@@ -54,6 +55,14 @@
         // We couldn't log in
         NSLog(@"Error logging in");
     }
+}
+
+- (void)loginFailed {
+    // do stuffs for a login failure
+    [self.activity stopAnimating];
+    self.activity.hidden = YES;
+    self.loginError.hidden = NO;
+    NSLog(@"oh noes!");
 }
 
 - (void)didReceiveMemoryWarning
@@ -90,6 +99,7 @@
     [self.view setBackgroundColor: [[self class] colorFromHexString:@"333366"]];
     
     self.activity.hidden = YES;
+    self.loginError.hidden = YES;
     
     self.navigationController.navigationBarHidden = YES;
 }

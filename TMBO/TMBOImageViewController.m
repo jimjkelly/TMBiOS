@@ -33,6 +33,11 @@
     return _imageStream;
 }
 
+- (IBAction)logoutPressed:(UIButton *)sender {
+    [self.tmbo logout];
+    NSLog(@"Logout pressed by user");
+    [self performSegueWithIdentifier:@"ImagesToLogin" sender:self];
+}
 
 - (void)setCurrentIndex:(NSNumber *)currentIndex {
     if ([currentIndex intValue] <= 0) {
@@ -50,6 +55,15 @@
 - (TMBO_API *)tmbo {
     if (!_tmbo) _tmbo = [[TMBO_API alloc] init];
     return _tmbo;
+}
+
+- (void)loginFailed {
+    // do stuffs for a login failure.  What's a login failure doing here?
+    // if our authToken is invalidated, this could happpen.  Kick us
+    // back to the login screen.  In the future we may want to consider
+    // providing a message about why this happened.
+    NSLog(@"Login no longer accepted, kicking back to login screen");
+    [self performSegueWithIdentifier:@"ImagesToLogin" sender:self];
 }
 
 - (void)viewImageAtIndex:(NSNumber *)index {

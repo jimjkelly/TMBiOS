@@ -18,12 +18,14 @@
 @synthesize delegate = _delegate;
 
 NSString const *kAPIURL = @"https://thismight.be/offensive/api.php";
-NSString const *kUSERAGENT = @"TMBiOS - ponysoft.net";
+NSString const *kUSERAGENT = @"TMBiOS %@ (%@) - ponysoft.net (%@/%@ %@)";
  // The return format, can be json, plist, etc.  See API docs for more info.
 NSString const *kRETURNFORMAT = @"json";
 
 
 @synthesize authToken = _authToken;
+@synthesize showNSFW = _showNSFW;
+@synthesize showTMBO = _showTMBO;
 
 
 - (NSString *)authToken {
@@ -46,7 +48,9 @@ NSString const *kRETURNFORMAT = @"json";
     _authToken = authToken;
 }
 
-
+- (NSString *)getUserAgent {
+    return [[NSString alloc] initWithFormat:kUSERAGENT, [[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleShortVersionString"],[[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleVersion"], [[UIDevice currentDevice] model], [[UIDevice currentDevice] systemName], [[UIDevice currentDevice] systemVersion]];
+}
 
 - (void)loginWithUsername:(NSString *)username andPassowrd:(NSString *)password withDelegate:(id)delegate {
     self.delegate = delegate;
@@ -54,7 +58,7 @@ NSString const *kRETURNFORMAT = @"json";
     NSString *urlString = [[NSString alloc] initWithFormat:@"%@/login.%@?username=%@&password=%@&gettoken=1", kAPIURL, kRETURNFORMAT ,username, password];
 	NSURL *url = [NSURL URLWithString:urlString];
     NSMutableURLRequest *request = [[NSMutableURLRequest alloc] initWithURL:url];
-    [request setValue:kUSERAGENT forHTTPHeaderField:@"User-Agent"];
+    [request setValue:[self getUserAgent] forHTTPHeaderField:@"User-Agent"];
     
     HTTPResource *httpResource = [[HTTPResource alloc] init];
     [httpResource getDictionaryFromURL:request withStringSelector:@"loginWithUsernameResult:" andDelegate:self];
@@ -71,13 +75,21 @@ NSString const *kRETURNFORMAT = @"json";
 
 }
 
+- (void)loginFailed {
+    // pass login failures up to delegate
+    [self.delegate performSelector:@selector(loginFailed)];
+}
+
+- (void)logout {
+    self.authToken = nil;
+}
 
 - (void)getUploadswithDelegate:(id)delegate {
     self.delegate = delegate;
     NSString *urlString = [[NSString alloc] initWithFormat:@"%@/getuploads.%@?token=%@&", kAPIURL, kRETURNFORMAT, self.authToken];
     NSURL *url = [NSURL URLWithString:urlString];
     NSMutableURLRequest *request = [[NSMutableURLRequest alloc] initWithURL:url];
-    [request setValue:kUSERAGENT forHTTPHeaderField:@"User-Agent"];
+    [request setValue:[self getUserAgent] forHTTPHeaderField:@"User-Agent"];
     
     HTTPResource *httpResource = [[HTTPResource alloc] init];
     [httpResource getDictionaryFromURL:request withStringSelector:@"getUploadsResult:" andDelegate:self];
@@ -89,7 +101,7 @@ NSString const *kRETURNFORMAT = @"json";
     NSString *urlString = [[NSString alloc] initWithFormat:@"%@/getuploads.%@?token=%@&type=%@", kAPIURL, kRETURNFORMAT, self.authToken, uploadType];
     NSURL *url = [NSURL URLWithString:urlString];
     NSMutableURLRequest *request = [[NSMutableURLRequest alloc] initWithURL:url];
-    [request setValue:kUSERAGENT forHTTPHeaderField:@"User-Agent"];
+    [request setValue:[self getUserAgent] forHTTPHeaderField:@"User-Agent"];
 
     HTTPResource *httpResource = [[HTTPResource alloc] init];
     [httpResource getDictionaryFromURL:request withStringSelector:@"getUploadsResult:" andDelegate:self];
@@ -103,28 +115,13 @@ NSString const *kRETURNFORMAT = @"json";
     NSString *fullLink = [[NSString alloc] initWithFormat:@"http://thismight.be%@", filePath];
     NSURL *url = [NSURL URLWithString:fullLink];
     NSMutableURLRequest *request = [[NSMutableURLRequest alloc] initWithURL:url];
-    [request setValue:kUSERAGENT forHTTPHeaderField:@"User-Agent"];
+    [request setValue:[self getUserAgent] forHTTPHeaderField:@"User-Agent"];
     
     
     NSURLResponse *response = [[NSURLResponse alloc] init];
     NSError *error = [[NSError alloc] init];
     return [[UIImage alloc] initWithData:[NSURLConnection sendSynchronousRequest:request returningResponse:&response error:&error]];
 }
-
-
-/*- (void)getUIImagewithDelegate:(id)delegate fromURL:(NSString *)urlString {
-    self.delegate = delegate;
-    NSURL *url = [NSURL URLWithString:urlString];
-    NSMutableURLRequest *request = [[NSMutableURLRequest alloc] initWithURL:url];
-    [request setValue:kUSERAGENT forHTTPHeaderField:@"User-Agent"];
-    
-    UIImage *image = [UIImage alloc] initWithData:[NSData dataWithContentsOfURL:request];
-    [NSData data
-    
-    [self.delegate performSelector: @selector(getUIImageDidFinish:) withObject:image];
-}*/
-
-
 
 
 
