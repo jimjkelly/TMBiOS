@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="1.0" toolsVersion="1938" systemVersion="11C74" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" initialViewController="zjO-pv-Ijx">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="1.0" toolsVersion="1938" systemVersion="11D50b" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" initialViewController="zjO-pv-Ijx">
     <dependencies>
         <development defaultVersion="4200" identifier="xcode"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="933"/>
@@ -10,7 +10,7 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="4" sceneMemberID="firstResponder"/>
                 <viewController id="2" customClass="TMBOLoginViewController" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="3">
-                        <rect key="frame" x="0.0" y="64" width="320" height="416"/>
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="416"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <subviews>
                             <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" minimumFontSize="17" id="wFq-sL-qxa">
@@ -86,7 +86,7 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="RKx-ZB-gBa" userLabel="First Responder" sceneMemberID="firstResponder"/>
                 <viewController id="a3f-QK-HJI" customClass="TMBOImageViewController" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="Qm5-6Q-Okj">
-                        <rect key="frame" x="0.0" y="20" width="320" height="460"/>
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="460"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <subviews>
                             <imageView userInteractionEnabled="NO" contentMode="scaleToFill" id="TkC-QQ-Xma">
@@ -176,6 +176,8 @@
                     <navigationItem key="navigationItem" id="xGj-KR-MND"/>
                     <connections>
                         <outlet property="image" destination="TkC-QQ-Xma" id="7f2-B5-Idt"/>
+                        <outlet property="tIB" destination="lpY-hX-gZr" id="lP9-r8-G4o"/>
+                        <outlet property="tIG" destination="sQX-kM-yiU" id="dkC-vY-QJt"/>
                         <segue destination="2" kind="modal" identifier="ImagesToLogin" id="J7u-Wr-Qkn"/>
                     </connections>
                 </viewController>
@@ -209,6 +211,8 @@
             <source key="sourceIdentifier" type="project" relativePath="./Classes/TMBOImageViewController.h"/>
             <relationships>
                 <relationship kind="outlet" name="image" candidateClass="UIImageView"/>
+                <relationship kind="outlet" name="tIB" candidateClass="UIButton"/>
+                <relationship kind="outlet" name="tIG" candidateClass="UIButton"/>
             </relationships>
         </class>
         <class className="TMBOLoginViewController" superclassName="TMBOBaseViewController">

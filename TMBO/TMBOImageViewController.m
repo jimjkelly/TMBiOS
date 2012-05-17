@@ -9,28 +9,103 @@
 #import "TMBOImageViewController.h"
 #import "TMBO-API.h"
 
-@interface TMBOImageViewController()
-@property (nonatomic, strong) TMBO_API *tmbo;
-@property (nonatomic, strong) NSArray *imageStream;
+@interface TMBOImage()
+@property (weak, nonatomic) NSString *url;
+@property (weak, nonatomic) NSArray *comments;
+@end
+
+@implementation TMBOImage
+@synthesize url = _url;
+@synthesize comments = _comments;
+
+- (BOOL)hasUserCommented:(NSString *)userid {
+    return NO; 
+}
+
+@end
+
+
+@interface TMBOStream()
+@property (strong, nonatomic) NSArray *stream;
 @property (nonatomic, strong) NSNumber *currentIndex;
 @end
 
-@implementation TMBOImageViewController
-@synthesize imageStream = _imageStream;
-
-@synthesize image = _image;
+@implementation TMBOStream
+@synthesize stream = _stream;
 @synthesize currentIndex = _currentIndex;
 @synthesize delegate = _delegate;
 @synthesize tmbo = _tmbo;
+
+- (void)setStream:(NSArray *)stream {
+    if (_stream != stream) {
+        _stream = stream;
+        [self.delegate reloadData];
+    }
+}
+
+- (NSArray *)stream {
+    if (!_stream) _stream = [[NSArray alloc] init];
+    return _stream;
+}
+
+- (void)refreshStream {
+    dispatch_queue_t streamQueue = dispatch_queue_create("stream_download", NULL);
+    dispatch_async(streamQueue, ^{
+        
+    });
+}
 
 - (NSNumber *)currentIndex {
     if (!_currentIndex) _currentIndex = [[NSNumber alloc] initWithInt:0];
     return _currentIndex;
 }
 
-- (NSArray *)imageStream {
-    if (!_imageStream) _imageStream = [[NSArray alloc] init];
-    return _imageStream;
+@end
+
+
+
+
+
+@interface TMBOImageViewController()
+@property (nonatomic, strong) TMBO_API *tmbo;
+@property (nonatomic, strong) NSArray *imageStream;
+@end
+
+@implementation TMBOImageViewController
+
+// On-screen objects
+@synthesize tIB = _tIB;
+@synthesize tIG = _tIG;
+@synthesize image = _image;
+
+// Other helper objects
+@synthesize imageStream = _imageStream;
+@synthesize delegate = _delegate;
+@synthesize tmbo = _tmbo;
+
+
+- (void) enableVoteButtons {
+    // Not sure why we'd use this necessarily, but hey, why not
+    [self.tIG setEnabled:YES];
+    [self.tIG setAlpha:1.0];
+    [self.tIB setEnabled:YES];
+    [self.tIB setAlpha:1.0];
+}
+
+- (void) disableVoteButtons:(NSString *) showVote {
+    [self.tIG setEnabled:NO];
+    [self.tIB setEnabled:NO];
+    
+    if (!showVote) {
+        [self.tIG setAlpha:0.4];
+        [self.tIB setAlpha:0.4];
+    } else if ([showVote isEqualToString:@"-"]) {
+        [self.tIG setAlpha:0.0];
+        [self.tIB setAlpha:0.4];        
+    } else if ([showVote isEqualToString:@"+"]) {
+        [self.tIG setAlpha:0.4];
+        [self.tIB setAlpha:0.0];
+    }
 }
 
 - (IBAction)logoutPressed:(UIButton *)sender {
@@ -55,22 +130,12 @@
     [self.tmbo getUploadswithDelegate:self ofType:@"image"];
 }
 
-- (IBAction)voteOnImage:(UIButton *)sender {
-    NSString *vote = sender.currentTitle;
-    NSLog(@"User votes %@ on photo %d", vote, [self.currentIndex intValue]);
-}
-
-- (void)setCurrentIndex:(NSNumber *)currentIndex {
-    if ([currentIndex intValue] <= 0) {
-        NSLog(@"Setting index to 0, as attempt was made to set to %@", currentIndex);
-        _currentIndex = 0;
-    } else if ([currentIndex intValue] >= [self.imageStream count]) {
-        NSLog(@"Setting index to the imageStream count, as we attempted to set to %@", currentIndex);
-        _currentIndex = [[NSNumber alloc] initWithInt:[self.imageStream count]];
-    } else {
-        NSLog(@"Setting index to %@", currentIndex);
-        _currentIndex = currentIndex;
-    }
+- (IBAction)voteOnImage:(UIButton *)sender {    
+    //NSString *vote = sender.currentTitle;
+    //NSNumber *fileID = [self.tmbo getFileID:[self.imageStream objectAtIndex:[self.currentIndex integerValue]]];
+    
+    //[self disableVoteButtons:vote];
+    //[self.tmbo vote:vote onUpload:[[NSString alloc] initWithFormat:@"%d", [fileID intValue]]];
 }
 
 - (TMBO_API *)tmbo {
@@ -88,36 +153,30 @@
 }
 
 - (void)viewImageAtIndex:(NSNumber *)index {
-    self.currentIndex = index;
-    NSLog(@"Viewing image at index %@", self.currentIndex);
-    NSString *link_file = [[self.imageStream objectAtIndex:[self.currentIndex integerValue]] objectForKey:@"link_file"];
+    //self.currentIndex = index;
+    //NSLog(@"Viewing image at index %@", self.currentIndex);
+    // This should really be pushed into the client-side TMBO API
+    //NSString *link_file = [[self.imageStream objectAtIndex:[self.currentIndex integerValue]] objectForKey:@"link_file"];
     
-    NSLog(@"Downloading contents of %@", link_file);
-    [self.image setImage:[self.tmbo getUIImageFromFilePath:link_file]];
-    NSLog(@"done.");
+    //NSLog(@"Downloading contents of %@", link_file);
+    //[self.image setImage:[self.tmbo getUIImageFromFilePath:link_file]];
+    //NSLog(@"done.");
 }
 
-- (void)getUploadsDidFinish:(NSArray *)uploads {
-    if ([uploads count] != 0) {
-        NSLog(@"Setting image stream");
-        self.imageStream = uploads;
-        self.currentIndex = 0;
-        [self viewImageAtIndex:self.currentIndex];
-    }
-}
+
 
 
 
 
 - (void)oneFingerSwipeUp:(UITapGestureRecognizer *)recognizer {
     // Insert your own code to handle swipe left
-    [self viewImageAtIndex:[[NSNumber alloc] initWithInt:[self.currentIndex integerValue] + 1]];
+    //[self viewImageAtIndex:[[NSNumber alloc] initWithInt:[self.currentIndex integerValue] + 1]];
 }
 
 
 - (void)oneFingerSwipeDown:(UITapGestureRecognizer *)recognizer {
     // Insert your own code to handle swipe left
-    [self viewImageAtIndex:[[NSNumber alloc] initWithInt:[self.currentIndex integerValue] - 1]];
+    //[self viewImageAtIndex:[[NSNumber alloc] initWithInt:[self.currentIndex integerValue] - 1]];
 }
 
 

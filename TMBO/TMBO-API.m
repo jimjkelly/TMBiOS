@@ -11,13 +11,15 @@
 
 @interface TMBO_API()
 @property (nonatomic, assign) id delegate;
+@property (nonatomic, strong) NSString *userid;
 @end
 
 @implementation TMBO_API
 
 @synthesize delegate = _delegate;
+@synthesize userid = _userid;
 
-NSString const *kAPIURL = @"https://thismight.be/offensive/api.php";
+NSString const *kAPIURI = @"/offensive/api.php";
 NSString const *kUSERAGENT = @"TMBiOS %@ (%@) - ponysoft.net (%@/%@ %@)";
  // The return format, can be json, plist, etc.  See API docs for more info.
 NSString const *kRETURNFORMAT = @"json";
@@ -97,22 +99,70 @@ NSString const *kRETURNFORMAT = @"json";
     return [[NSString alloc] initWithFormat:kUSERAGENT, [[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleShortVersionString"],[[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleVersion"], [[UIDevice currentDevice] model], [[UIDevice currentDevice] systemName], [[UIDevice currentDevice] systemVersion]];
 }
 
+- (void)vote:(NSString *)vote onUpload:(NSString *)uploadID{
+    NSString *voteString = @"novote";
+    NSString *subscribe = @"0";
+    
+    if ([vote isEqualToString:@"-"]) {
+        // vote bad
+        voteString = @"this%20is%20bad";
+        subscribe = @"1";
+    } else if ([vote isEqualToString:@"+"]) {
+        voteString = @"this%20is%20good";
+        subscribe = @"0";
+    } else {
+        // This should probably throw an error maybe?
+    }
+    
+    NSLog(@"voteString: %@", voteString);
+    NSLog(@"subscribe: %@", subscribe);
+    
+    NSString *TMBOSERVER = [[[NSBundle mainBundle] infoDictionary] objectForKey:@"TMBOSERVER"];
+    
+    NSString *urlString = [[NSString alloc] initWithFormat:@"%@%@/postcomment.php?fileid=%@&vote=%@&subscribe=%@", TMBOSERVER, kAPIURI, uploadID, voteString, subscribe];
+	NSURL *url = [NSURL URLWithString:urlString];
+    NSLog(@"Vote URL: %@", url);
+    NSMutableURLRequest *request = [[NSMutableURLRequest alloc] initWithURL:url];
+    [request setValue:[self getUserAgent] forHTTPHeaderField:@"User-Agent"];
+
+    HTTPResource *httpResource = [[HTTPResource alloc] init];
+    [httpResource postToURL:request];
+}
+
+- (void)getCommentswithDelegate:(id)delegate onThread:(NSString *)thread byUser:(NSString *)user {
+    NSString *TMBOSERVER = [[[NSBundle mainBundle] infoDictionary] objectForKey:@"TMBOSERVER"];
+    NSString *urlString = [[NSString alloc] initWithFormat:@"%@%@/getcomments.%@?userid=%@&thread=%@", TMBOSERVER, kAPIURI, kRETURNFORMAT, user, thread];
+    NSURL *url = [NSURL URLWithString:urlString];
+    NSMutableURLRequest *request = [[NSMutableURLRequest alloc] initWithURL:url];
+    [request setValue:[self getUserAgent] forHTTPHeaderField:@"User-Agent"];
+    HTTPResource *httpResource = [[HTTPResource alloc] init];
+    [httpResource getDictionaryFromURL:request withStringSelector:@"getCommentsonThreadbyUserResult:" andDelegate:self];
+}
+
+- (void)getCommentsonThreadbyUserResult:(NSDictionary *) result {
+    [self.delegate performSelector:@selector(getCommentsonThreadbyUserDidFinish) withObject:result];
+}
+
+- (NSNumber *)getFileID:(NSDictionary *)givenUpload {
+    return [givenUpload objectForKey:@"id"];
+}
+
 - (void)loginWithUsername:(NSString *)username andPassowrd:(NSString *)password withDelegate:(id)delegate {
     self.delegate = delegate;
-    //NSString *urlString = [[NSString alloc] initWithFormat:@"%@/%@%@%@%@%@%@", kAPIURL, @"login.", kRETURNFORMAT ,"?username=", username, @"&password=", password, @"&gettoken=1"];
-    NSString *urlString = [[NSString alloc] initWithFormat:@"%@/login.%@?username=%@&password=%@&gettoken=1", kAPIURL, kRETURNFORMAT ,username, password];
+    NSString *TMBOSERVER = [[[NSBundle mainBundle] infoDictionary] objectForKey:@"TMBOSERVER"];
+    NSString *urlString = [[NSString alloc] initWithFormat:@"%@%@/login.%@?username=%@&password=%@&gettoken=1", TMBOSERVER, kAPIURI, kRETURNFORMAT ,username, password];
 	NSURL *url = [NSURL URLWithString:urlString];
     NSMutableURLRequest *request = [[NSMutableURLRequest alloc] initWithURL:url];
     [request setValue:[self getUserAgent] forHTTPHeaderField:@"User-Agent"];
     
     HTTPResource *httpResource = [[HTTPResource alloc] init];
     [httpResource getDictionaryFromURL:request withStringSelector:@"loginWithUsernameResult:" andDelegate:self];
-    
 }
 
 - (void)loginWithUsernameResult:(NSDictionary *)result {
     if(result){
         self.authToken = [result objectForKey:@"tokenid"];
+        self.userid = [result objectForKey:@"userid"];
         [self.delegate performSelector: @selector(loginConnectionDidFinish:) withObject:[NSNumber numberWithBool:YES]];
     } else {
         [self.delegate performSelector: @selector(loginConnectionDidFinish:) withObject:[NSNumber numberWithBool:NO]];
@@ -142,7 +192,9 @@ NSString const *kRETURNFORMAT = @"json";
         nsfwURLArg = [[NSString alloc] initWithString:@"&nsfw=0"];
     }
     
-    NSString *urlString = [[NSString alloc] initWithFormat:@"%@/getuploads.%@?token=%@%@%@", kAPIURL, kRETURNFORMAT, self.authToken, tmboURLArg, nsfwURLArg];
+    NSString *TMBOSERVER = [[[NSBundle mainBundle] infoDictionary] objectForKey:@"TMBOSERVER"];
+    
+    NSString *urlString = [[NSString alloc] initWithFormat:@"%@%@/getuploads.%@?token=%@%@%@", TMBOSERVER, kAPIURI, kRETURNFORMAT, self.authToken, tmboURLArg, nsfwURLArg];
     
     NSLog(@"urlString: %@", urlString);
     
@@ -168,7 +220,9 @@ NSString const *kRETURNFORMAT = @"json";
         nsfwURLArg = [[NSString alloc] initWithString:@"&nsfw=0"];
     }
     
-    NSString *urlString = [[NSString alloc] initWithFormat:@"%@/getuploads.%@?token=%@&type=%@%@%@", kAPIURL, kRETURNFORMAT, self.authToken, uploadType, tmboURLArg, nsfwURLArg];
+    NSString *TMBOSERVER = [[[NSBundle mainBundle] infoDictionary] objectForKey:@"TMBOSERVER"];
+    
+    NSString *urlString = [[NSString alloc] initWithFormat:@"%@%@/getuploads.%@?token=%@&type=%@%@%@", TMBOSERVER, kAPIURI, kRETURNFORMAT, self.authToken, uploadType, tmboURLArg, nsfwURLArg];
     NSLog(@"urlString: %@", urlString);
     
     NSURL *url = [NSURL URLWithString:urlString];
@@ -184,7 +238,8 @@ NSString const *kRETURNFORMAT = @"json";
 }
 
 - (UIImage *)getUIImageFromFilePath:(NSString *)filePath {
-    NSString *fullLink = [[NSString alloc] initWithFormat:@"http://thismight.be%@", filePath];
+    NSString *TMBOSERVER = [[[NSBundle mainBundle] infoDictionary] objectForKey:@"TMBOSERVER"];
+    NSString *fullLink = [[NSString alloc] initWithFormat:@"%@%@", TMBOSERVER, filePath];
     NSURL *url = [NSURL URLWithString:fullLink];
     NSMutableURLRequest *request = [[NSMutableURLRequest alloc] initWithURL:url];
     [request setValue:[self getUserAgent] forHTTPHeaderField:@"User-Agent"];
@@ -194,7 +249,6 @@ NSString const *kRETURNFORMAT = @"json";
     NSError *error = [[NSError alloc] init];
     return [[UIImage alloc] initWithData:[NSURLConnection sendSynchronousRequest:request returningResponse:&response error:&error]];
 }
-
 
 
 @end

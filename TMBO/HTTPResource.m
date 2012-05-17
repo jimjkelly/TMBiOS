@@ -33,6 +33,14 @@
     [[NSURLConnection alloc] initWithRequest:url delegate:self];
 }
 
+- (void) postToURL:(NSMutableURLRequest *)url {
+    // The upstream request doesn't care about getting more information
+    self.delegate = nil;
+    self.selector = nil;
+    
+    [[NSURLConnection alloc] initWithRequest:url delegate:self];
+}
+
 - (void)connection:(NSURLConnection *)connection didReceiveResponse:(NSURLResponse *)response {
 	[self.responseData setLength:0];
     NSHTTPURLResponse *httpResponse = (NSHTTPURLResponse *)response;
@@ -42,7 +50,12 @@
         // delegate's failure
         [connection cancel];
         NSLog(@"Login failure");
-        [self.delegate performSelector:@selector(loginFailed)];
+        // TODO: This creates the interesting scenario where something like
+        // a vote fails because we aren't logged in, but the user doesn't
+        // know why.
+        if (self.delegate) {
+            [self.delegate performSelector:@selector(loginFailed)];
+        }
     }
 }
 
@@ -60,7 +73,20 @@
     NSDictionary *result = [NSJSONSerialization JSONObjectWithData:self.responseData options:0 error:&error];
     //NSLog( @"result is %@", result);
 
-    [self.delegate performSelector: NSSelectorFromString(self.selector) withObject:result];
+    if (self.selector) {
+        [self.delegate performSelector: NSSelectorFromString(self.selector) withObject:result];
+
+    }
+}
+
+- (BOOL)connection:(NSURLConnection *)connection canAuthenticateAgainstProtectionSpace:(NSURLProtectionSpace *)protectionSpace {
+    return [protectionSpace.authenticationMethod isEqualToString:NSURLAuthenticationMethodServerTrust];
+}
+
+- (void)connection:(NSURLConnection *)connection didReceiveAuthenticationChallenge:(NSURLAuthenticationChallenge *)challenge {
+    [challenge.sender useCredential:[NSURLCredential credentialForTrust:challenge.protectionSpace.serverTrust] forAuthenticationChallenge:challenge];
+    
+    [challenge.sender continueWithoutCredentialForAuthenticationChallenge:challenge];
 }
 
 @end

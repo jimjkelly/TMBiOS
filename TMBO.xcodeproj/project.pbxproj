@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		5D3FDA281511607700D926CB /* TMBO-Info-DEV.plist in Resources */ = {isa = PBXBuildFile; fileRef = 5D3FDA271511607700D926CB /* TMBO-Info-DEV.plist */; };
 		5DD6CCF014E1F303003F5D99 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5DD6CCEF14E1F303003F5D99 /* UIKit.framework */; };
 		5DD6CCF214E1F303003F5D99 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5DD6CCF114E1F303003F5D99 /* Foundation.framework */; };
 		5DD6CCF414E1F303003F5D99 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5DD6CCF314E1F303003F5D99 /* CoreGraphics.framework */; };
@@ -26,6 +27,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		5D3FDA271511607700D926CB /* TMBO-Info-DEV.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "TMBO-Info-DEV.plist"; sourceTree = "<group>"; };
 		5DD6CCEB14E1F303003F5D99 /* TMBiOS.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = TMBiOS.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		5DD6CCEF14E1F303003F5D99 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
 		5DD6CCF114E1F303003F5D99 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
@@ -124,6 +126,7 @@
 		5DD6CCF614E1F303003F5D99 /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
+				5D3FDA271511607700D926CB /* TMBO-Info-DEV.plist */,
 				5DD6CCF714E1F303003F5D99 /* TMBO-Info.plist */,
 				5DD6CCF814E1F303003F5D99 /* InfoPlist.strings */,
 				5DD6CCFB14E1F303003F5D99 /* main.m */,
@@ -198,6 +201,7 @@
 				5DD6CD0D14E1F3F9003F5D99 /* Icon.png in Resources */,
 				5DD6CD4814E88CBA003F5D99 /* README.txt in Resources */,
 				5DD6CD4914E88CBA003F5D99 /* release_notes.txt in Resources */,
+				5D3FDA281511607700D926CB /* TMBO-Info-DEV.plist in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -294,7 +298,7 @@
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "TMBO/TMBO-Prefix.pch";
-				INFOPLIST_FILE = "TMBO/TMBO-Info.plist";
+				INFOPLIST_FILE = "TMBO/TMBO-Info-DEV.plist";
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
 					"\"$(SRCROOT)/TestFlightSDK0.8.2\"",

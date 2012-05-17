@@ -9,5 +9,6 @@
 #import <Foundation/Foundation.h>
 
 @interface HTTPResource : NSObject
+- (void) postToURL:(NSMutableURLRequest *)url;
 - (void) getDictionaryFromURL:(NSMutableURLRequest *)url withStringSelector:(NSString *) selector andDelegate:(id)delegate;
 @end
