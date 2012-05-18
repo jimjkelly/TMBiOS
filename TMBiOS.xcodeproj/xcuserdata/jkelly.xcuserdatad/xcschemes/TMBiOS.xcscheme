@@ -13,17 +13,17 @@
             buildForAnalyzing = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "5DD6CCEA14E1F303003F5D99"
+               BlueprintIdentifier = "5D8F98041564793100081C26"
                BuildableName = "TMBiOS.app"
                BlueprintName = "TMBiOS"
-               ReferencedContainer = "container:TMBO.xcodeproj">
+               ReferencedContainer = "container:TMBiOS.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
       </BuildActionEntries>
    </BuildAction>
    <TestAction
-      selectedDebuggerIdentifier = "Xcode.DebuggerFoundation.Debugger.GDB"
-      selectedLauncherIdentifier = "Xcode.DebuggerFoundation.Launcher.GDB"
+      selectedDebuggerIdentifier = "Xcode.DebuggerFoundation.Debugger.LLDB"
+      selectedLauncherIdentifier = "Xcode.DebuggerFoundation.Launcher.LLDB"
       shouldUseLaunchSchemeArgsEnv = "YES"
       buildConfiguration = "Debug">
       <Testables>
@@ -31,28 +31,29 @@
       <MacroExpansion>
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "5DD6CCEA14E1F303003F5D99"
+            BlueprintIdentifier = "5D8F98041564793100081C26"
             BuildableName = "TMBiOS.app"
             BlueprintName = "TMBiOS"
-            ReferencedContainer = "container:TMBO.xcodeproj">
+            ReferencedContainer = "container:TMBiOS.xcodeproj">
          </BuildableReference>
       </MacroExpansion>
    </TestAction>
    <LaunchAction
-      selectedDebuggerIdentifier = "Xcode.DebuggerFoundation.Debugger.GDB"
-      selectedLauncherIdentifier = "Xcode.DebuggerFoundation.Launcher.GDB"
+      selectedDebuggerIdentifier = "Xcode.DebuggerFoundation.Debugger.LLDB"
+      selectedLauncherIdentifier = "Xcode.DebuggerFoundation.Launcher.LLDB"
       launchStyle = "0"
       useCustomWorkingDirectory = "NO"
       buildConfiguration = "Debug"
+      ignoresPersistentStateOnLaunch = "NO"
       debugDocumentVersioning = "YES"
       allowLocationSimulation = "YES">
       <BuildableProductRunnable>
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "5DD6CCEA14E1F303003F5D99"
+            BlueprintIdentifier = "5D8F98041564793100081C26"
             BuildableName = "TMBiOS.app"
             BlueprintName = "TMBiOS"
-            ReferencedContainer = "container:TMBO.xcodeproj">
+            ReferencedContainer = "container:TMBiOS.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
       <AdditionalOptions>
@@ -67,10 +68,10 @@
       <BuildableProductRunnable>
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "5DD6CCEA14E1F303003F5D99"
+            BlueprintIdentifier = "5D8F98041564793100081C26"
             BuildableName = "TMBiOS.app"
             BlueprintName = "TMBiOS"
-            ReferencedContainer = "container:TMBO.xcodeproj">
+            ReferencedContainer = "container:TMBiOS.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
    </ProfileAction>
@@ -78,7 +79,7 @@
       buildConfiguration = "Debug">
    </AnalyzeAction>
    <ArchiveAction
-      buildConfiguration = "Ad-Hoc Distribution"
+      buildConfiguration = "Release"
       revealArchiveInOrganizer = "YES">
    </ArchiveAction>
 </Scheme>

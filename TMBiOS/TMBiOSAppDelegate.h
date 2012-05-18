@@ -1,15 +1,15 @@
 //
-//  TMBOAppDelegate.h
-//  TMBO
+//  TMBiOSAppDelegate.h
+//  TMBiOS
 //
-//  Created by Jim Kelly on 2/8/12.
+//  Created by Jim Kelly on 5/17/12.
 //  Copyright (c) 2012 __MyCompanyName__. All rights reserved.
 //
 
 #import <UIKit/UIKit.h>
 #import "TestFlight.h"
 
-@interface TMBOAppDelegate : UIResponder <UIApplicationDelegate>
+@interface TMBiOSAppDelegate : UIResponder <UIApplicationDelegate>
 
 @property (strong, nonatomic) UIWindow *window;
 

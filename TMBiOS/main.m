@@ -1,18 +1,18 @@
 //
 //  main.m
-//  TMBO
+//  TMBiOS
 //
-//  Created by Jim Kelly on 2/8/12.
+//  Created by Jim Kelly on 5/17/12.
 //  Copyright (c) 2012 __MyCompanyName__. All rights reserved.
 //
 
 #import <UIKit/UIKit.h>
 
-#import "TMBOAppDelegate.h"
+#import "TMBiOSAppDelegate.h"
 
 int main(int argc, char *argv[])
 {
     @autoreleasepool {
-        return UIApplicationMain(argc, argv, nil, NSStringFromClass([TMBOAppDelegate class]));
+        return UIApplicationMain(argc, argv, nil, NSStringFromClass([TMBiOSAppDelegate class]));
     }
 }

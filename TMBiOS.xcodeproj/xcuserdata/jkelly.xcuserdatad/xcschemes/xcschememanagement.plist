@@ -4,7 +4,7 @@
 <dict>
 	<key>SchemeUserState</key>
 	<dict>
-		<key>TMBO.xcscheme</key>
+		<key>TMBiOS.xcscheme</key>
 		<dict>
 			<key>orderHint</key>
 			<integer>0</integer>
@@ -12,12 +12,7 @@
 	</dict>
 	<key>SuppressBuildableAutocreation</key>
 	<dict>
-		<key>5DD6CCEA14E1F303003F5D99</key>
-		<dict>
-			<key>primary</key>
-			<true/>
-		</dict>
-		<key>5DD6CD2B14E88C54003F5D99</key>
+		<key>5D8F98041564793100081C26</key>
 		<dict>
 			<key>primary</key>
 			<true/>

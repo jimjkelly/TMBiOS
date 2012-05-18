@@ -8,6 +8,7 @@
 
 #import <UIKit/UIKit.h>
 #import "TMBOBaseViewController.h"
+#import "TMBO-API.h"
 
 @interface TMBOImage : NSObject
 @end
