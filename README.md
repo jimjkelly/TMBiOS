@@ -1,8 +1,8 @@
 
 TMBiOS: [This Might Be iOS]
-=========================
+===========================
 
-TMBiOS is an iOS (iPhone only, at the moment) client for TMBO.  The latest development code can be found on GitHub here:
+TMBiOS is an iOS client for TMBO.  The latest development code can be found on GitHub here:
 
 https://github.com/jimjkelly/TMBiOS
 
