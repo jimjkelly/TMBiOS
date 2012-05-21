@@ -17,7 +17,6 @@
 		5D8F98201564793100081C26 /* MainStoryboard_iPad.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 5D8F981E1564793100081C26 /* MainStoryboard_iPad.storyboard */; };
 		5D8F98231564793100081C26 /* TMBiOSViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5D8F98221564793100081C26 /* TMBiOSViewController.m */; };
 		5D8F982A15647A6400081C26 /* Icon.png in Resources */ = {isa = PBXBuildFile; fileRef = 5D8F982915647A6400081C26 /* Icon.png */; };
-		5D8F982C15647A6B00081C26 /* README in Resources */ = {isa = PBXBuildFile; fileRef = 5D8F982B15647A6B00081C26 /* README */; };
 		5D8F983215647A7100081C26 /* libTestFlight.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 5D8F982E15647A7100081C26 /* libTestFlight.a */; };
 		5D8F983315647A7100081C26 /* README.txt in Resources */ = {isa = PBXBuildFile; fileRef = 5D8F982F15647A7100081C26 /* README.txt */; };
 		5D8F983415647A7100081C26 /* release_notes.txt in Resources */ = {isa = PBXBuildFile; fileRef = 5D8F983015647A7100081C26 /* release_notes.txt */; };
@@ -26,6 +25,8 @@
 		5D8F98411564869200081C26 /* TMBOBaseViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5D8F983A15647BFC00081C26 /* TMBOBaseViewController.m */; };
 		5D8F98421564869600081C26 /* HTTPResource.m in Sources */ = {isa = PBXBuildFile; fileRef = 5D8F983615647BE500081C26 /* HTTPResource.m */; };
 		5D8F98431564869C00081C26 /* TMBO-API.m in Sources */ = {isa = PBXBuildFile; fileRef = 5D8F983815647BE500081C26 /* TMBO-API.m */; };
+		5D8F9845156AF5DD00081C26 /* README.md in Resources */ = {isa = PBXBuildFile; fileRef = 5D8F9844156AF5DC00081C26 /* README.md */; };
+		5D8F9848156AF74600081C26 /* TMBOStream.m in Sources */ = {isa = PBXBuildFile; fileRef = 5D8F9847156AF74600081C26 /* TMBOStream.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -44,7 +45,6 @@
 		5D8F98211564793100081C26 /* TMBiOSViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TMBiOSViewController.h; sourceTree = "<group>"; };
 		5D8F98221564793100081C26 /* TMBiOSViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = TMBiOSViewController.m; sourceTree = "<group>"; };
 		5D8F982915647A6400081C26 /* Icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Icon.png; sourceTree = "<group>"; };
-		5D8F982B15647A6B00081C26 /* README */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = README; sourceTree = "<group>"; };
 		5D8F982E15647A7100081C26 /* libTestFlight.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libTestFlight.a; sourceTree = "<group>"; };
 		5D8F982F15647A7100081C26 /* README.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = README.txt; sourceTree = "<group>"; };
 		5D8F983015647A7100081C26 /* release_notes.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = release_notes.txt; sourceTree = "<group>"; };
@@ -59,6 +59,9 @@
 		5D8F983C15647BFC00081C26 /* TMBOImageViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = TMBOImageViewController.m; sourceTree = "<group>"; };
 		5D8F983D15647BFC00081C26 /* TMBOLoginViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TMBOLoginViewController.h; sourceTree = "<group>"; };
 		5D8F983E15647BFC00081C26 /* TMBOLoginViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = TMBOLoginViewController.m; sourceTree = "<group>"; };
+		5D8F9844156AF5DC00081C26 /* README.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = README.md; sourceTree = "<group>"; };
+		5D8F9846156AF74500081C26 /* TMBOStream.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TMBOStream.h; sourceTree = "<group>"; };
+		5D8F9847156AF74600081C26 /* TMBOStream.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TMBOStream.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -80,7 +83,7 @@
 			isa = PBXGroup;
 			children = (
 				5D8F982D15647A7100081C26 /* TestFlightSDK0.8.2 */,
-				5D8F982B15647A6B00081C26 /* README */,
+				5D8F9844156AF5DC00081C26 /* README.md */,
 				5D8F982915647A6400081C26 /* Icon.png */,
 				5D8F980F1564793100081C26 /* TMBiOS */,
 				5D8F98081564793100081C26 /* Frameworks */,
@@ -113,6 +116,8 @@
 				5D8F983A15647BFC00081C26 /* TMBOBaseViewController.m */,
 				5D8F983B15647BFC00081C26 /* TMBOImageViewController.h */,
 				5D8F983C15647BFC00081C26 /* TMBOImageViewController.m */,
+				5D8F9846156AF74500081C26 /* TMBOStream.h */,
+				5D8F9847156AF74600081C26 /* TMBOStream.m */,
 				5D8F983D15647BFC00081C26 /* TMBOLoginViewController.h */,
 				5D8F983E15647BFC00081C26 /* TMBOLoginViewController.m */,
 				5D8F983515647BE500081C26 /* HTTPResource.h */,
@@ -207,9 +212,9 @@
 				5D8F981D1564793100081C26 /* MainStoryboard_iPhone.storyboard in Resources */,
 				5D8F98201564793100081C26 /* MainStoryboard_iPad.storyboard in Resources */,
 				5D8F982A15647A6400081C26 /* Icon.png in Resources */,
-				5D8F982C15647A6B00081C26 /* README in Resources */,
 				5D8F983315647A7100081C26 /* README.txt in Resources */,
 				5D8F983415647A7100081C26 /* release_notes.txt in Resources */,
+				5D8F9845156AF5DD00081C26 /* README.md in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -228,6 +233,7 @@
 				5D8F98411564869200081C26 /* TMBOBaseViewController.m in Sources */,
 				5D8F98421564869600081C26 /* HTTPResource.m in Sources */,
 				5D8F98431564869C00081C26 /* TMBO-API.m in Sources */,
+				5D8F9848156AF74600081C26 /* TMBOStream.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
