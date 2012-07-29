@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		5D228F6915C468B000B1E1F5 /* TMBOPoast.m in Sources */ = {isa = PBXBuildFile; fileRef = 5D228F6815C468B000B1E1F5 /* TMBOPoast.m */; };
 		5D8F980A1564793100081C26 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5D8F98091564793100081C26 /* UIKit.framework */; };
 		5D8F980C1564793100081C26 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5D8F980B1564793100081C26 /* Foundation.framework */; };
 		5D8F980E1564793100081C26 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5D8F980D1564793100081C26 /* CoreGraphics.framework */; };
@@ -27,9 +28,12 @@
 		5D8F98431564869C00081C26 /* TMBO-API.m in Sources */ = {isa = PBXBuildFile; fileRef = 5D8F983815647BE500081C26 /* TMBO-API.m */; };
 		5D8F9845156AF5DD00081C26 /* README.md in Resources */ = {isa = PBXBuildFile; fileRef = 5D8F9844156AF5DC00081C26 /* README.md */; };
 		5D8F9848156AF74600081C26 /* TMBOStream.m in Sources */ = {isa = PBXBuildFile; fileRef = 5D8F9847156AF74600081C26 /* TMBOStream.m */; };
+		5D8F984A156D997500081C26 /* TMBiOS-Info-DEV.plist in Resources */ = {isa = PBXBuildFile; fileRef = 5D8F9849156D997500081C26 /* TMBiOS-Info-DEV.plist */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		5D228F6715C468B000B1E1F5 /* TMBOPoast.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TMBOPoast.h; sourceTree = "<group>"; };
+		5D228F6815C468B000B1E1F5 /* TMBOPoast.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TMBOPoast.m; sourceTree = "<group>"; };
 		5D8F98051564793100081C26 /* TMBiOS.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = TMBiOS.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		5D8F98091564793100081C26 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
 		5D8F980B1564793100081C26 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
@@ -62,6 +66,7 @@
 		5D8F9844156AF5DC00081C26 /* README.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = README.md; sourceTree = "<group>"; };
 		5D8F9846156AF74500081C26 /* TMBOStream.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TMBOStream.h; sourceTree = "<group>"; };
 		5D8F9847156AF74600081C26 /* TMBOStream.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TMBOStream.m; sourceTree = "<group>"; };
+		5D8F9849156D997500081C26 /* TMBiOS-Info-DEV.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "TMBiOS-Info-DEV.plist"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -118,6 +123,8 @@
 				5D8F983C15647BFC00081C26 /* TMBOImageViewController.m */,
 				5D8F9846156AF74500081C26 /* TMBOStream.h */,
 				5D8F9847156AF74600081C26 /* TMBOStream.m */,
+				5D228F6715C468B000B1E1F5 /* TMBOPoast.h */,
+				5D228F6815C468B000B1E1F5 /* TMBOPoast.m */,
 				5D8F983D15647BFC00081C26 /* TMBOLoginViewController.h */,
 				5D8F983E15647BFC00081C26 /* TMBOLoginViewController.m */,
 				5D8F983515647BE500081C26 /* HTTPResource.h */,
@@ -138,6 +145,7 @@
 		5D8F98101564793100081C26 /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
+				5D8F9849156D997500081C26 /* TMBiOS-Info-DEV.plist */,
 				5D8F98111564793100081C26 /* TMBiOS-Info.plist */,
 				5D8F98121564793100081C26 /* InfoPlist.strings */,
 				5D8F98151564793100081C26 /* main.m */,
@@ -215,6 +223,7 @@
 				5D8F983315647A7100081C26 /* README.txt in Resources */,
 				5D8F983415647A7100081C26 /* release_notes.txt in Resources */,
 				5D8F9845156AF5DD00081C26 /* README.md in Resources */,
+				5D8F984A156D997500081C26 /* TMBiOS-Info-DEV.plist in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -234,6 +243,7 @@
 				5D8F98421564869600081C26 /* HTTPResource.m in Sources */,
 				5D8F98431564869C00081C26 /* TMBO-API.m in Sources */,
 				5D8F9848156AF74600081C26 /* TMBOStream.m in Sources */,
+				5D228F6915C468B000B1E1F5 /* TMBOPoast.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -319,7 +329,7 @@
 			buildSettings = {
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "TMBiOS/TMBiOS-Prefix.pch";
-				INFOPLIST_FILE = "TMBiOS/TMBiOS-Info.plist";
+				INFOPLIST_FILE = "TMBiOS/TMBiOS-Info-DEV.plist";
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
 					"\"$(SRCROOT)/TestFlightSDK0.8.2\"",
@@ -363,6 +373,7 @@
 				5D8F98281564793100081C26 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};

@@ -5,6 +5,8 @@
 //  Created by Jim Kelly on 2/8/12.
 //  Copyright (c) 2012 PonySoft. All rights reserved.
 //
+//  The TMBO API is an ObjectiveC interface to 
+//  http://thismight.be/offensive/api.html
 
 #import "TMBO-API.h"
 #import "HTTPResource.h"

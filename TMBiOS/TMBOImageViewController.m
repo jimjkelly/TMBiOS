@@ -8,67 +8,13 @@
 
 #import "TMBOImageViewController.h"
 #import "TMBO-API.h"
-
-@interface TMBOImage()
-@property (weak, nonatomic) NSString *url;
-@property (weak, nonatomic) NSArray *comments;
-@end
-
-@implementation TMBOImage
-@synthesize url = _url;
-@synthesize comments = _comments;
-
-- (BOOL)hasUserCommented:(NSString *)userid {
-    return NO; 
-}
-
-@end
-
-
-@interface TMBOStream()
-@property (strong, nonatomic) NSArray *stream;
-@property (nonatomic, strong) NSNumber *currentIndex;
-@end
-
-@implementation TMBOStream
-@synthesize stream = _stream;
-@synthesize currentIndex = _currentIndex;
-@synthesize delegate = _delegate;
-@synthesize tmbo = _tmbo;
-
-- (void)setStream:(NSArray *)stream {
-    if (_stream != stream) {
-        _stream = stream;
-        [self.delegate reloadData];
-    }
-}
-
-- (NSArray *)stream {
-    if (!_stream) _stream = [[NSArray alloc] init];
-    return _stream;
-}
-
-- (void)refreshStream {
-    dispatch_queue_t streamQueue = dispatch_queue_create("stream_download", NULL);
-    dispatch_async(streamQueue, ^{
-        
-    });
-}
-
-- (NSNumber *)currentIndex {
-    if (!_currentIndex) _currentIndex = [[NSNumber alloc] initWithInt:0];
-    return _currentIndex;
-}
-
-@end
-
-
-
-
+#import "TMBOStream.h"
 
 @interface TMBOImageViewController()
 @property (nonatomic, strong) TMBO_API *tmbo;
+@property (nonatomic, strong) NSNumber *currentIndex;
 @property (nonatomic, strong) NSArray *imageStream;
+@property (nonatomic, strong) TMBOStream *tmboStream;
 @end
 
 @implementation TMBOImageViewController
@@ -79,10 +25,44 @@
 @synthesize image = _image;
 
 // Other helper objects
-@synthesize imageStream = _imageStream;
 @synthesize delegate = _delegate;
 @synthesize tmbo = _tmbo;
+@synthesize currentIndex = _currentIndex;
+@synthesize imageStream = _imageStream;
+@synthesize tmboStream = _tmboStream;
 
+- (void)setCurrentIndex:(NSNumber *)currentIndex {
+    if ([currentIndex intValue] <= 0) {
+        NSLog(@"Setting index to 0, as attempt was made to set to %@", currentIndex);
+        _currentIndex = 0;
+    } else if ([currentIndex intValue] >= [self.imageStream count]) {
+        NSLog(@"Setting index to the imageStream count, as we attempted to set to %@", currentIndex);
+        _currentIndex = [[NSNumber alloc] initWithInt:[self.imageStream count]];
+    } else {
+        NSLog(@"Setting index to %@", currentIndex);
+        _currentIndex = currentIndex;
+    }
+}
+
+- (NSArray *)imageStream {
+    if (!_imageStream) _imageStream = [[NSArray alloc] init];
+    return _imageStream;
+}
+
+- (NSNumber *)currentIndex {
+    if (!_currentIndex) _currentIndex = [[NSNumber alloc] initWithInt:0];
+    return _currentIndex;
+}
+
+- (TMBO_API *)tmbo {
+    if (!_tmbo) _tmbo = [[TMBO_API alloc] init];
+    return _tmbo;
+}
+
+- (TMBOStream *)tmboStream {
+    if (!_tmboStream) _tmboStream = [[TMBOStream alloc] init];
+    return _tmboStream;
+}
 
 - (void) enableVoteButtons {
     // Not sure why we'd use this necessarily, but hey, why not
@@ -138,11 +118,6 @@
     //[self.tmbo vote:vote onUpload:[[NSString alloc] initWithFormat:@"%d", [fileID intValue]]];
 }
 
-- (TMBO_API *)tmbo {
-    if (!_tmbo) _tmbo = [[TMBO_API alloc] init];
-    return _tmbo;
-}
-
 - (void)loginFailed {
     // do stuffs for a login failure.  What's a login failure doing here?
     // if our authToken is invalidated, this could happpen.  Kick us
@@ -152,36 +127,28 @@
     [self performSegueWithIdentifier:@"ImagesToLogin" sender:self];
 }
 
-- (void)viewImageAtIndex:(NSNumber *)index {
-    //self.currentIndex = index;
-    //NSLog(@"Viewing image at index %@", self.currentIndex);
-    // This should really be pushed into the client-side TMBO API
-    //NSString *link_file = [[self.imageStream objectAtIndex:[self.currentIndex integerValue]] objectForKey:@"link_file"];
-    
-    //NSLog(@"Downloading contents of %@", link_file);
-    //[self.image setImage:[self.tmbo getUIImageFromFilePath:link_file]];
-    //NSLog(@"done.");
+- (void)viewCurrentImageOn:(NSNotification *)notification {
+    NSLog(@"About to show initial image");
+    [self viewImageAtURL:[self.tmboStream getCurrentImageLink]];
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
-
-
-
-
+- (void)viewImageAtURL:(NSString *)link_file {
+    NSLog(@"Downloading contents of %@", link_file);
+    [self.image setImage:[self.tmbo getUIImageFromFilePath:link_file]];
+    NSLog(@"done.");
+}
 
 - (void)oneFingerSwipeUp:(UITapGestureRecognizer *)recognizer {
     // Insert your own code to handle swipe left
     //[self viewImageAtIndex:[[NSNumber alloc] initWithInt:[self.currentIndex integerValue] + 1]];
+    [self viewImageAtURL:[self.tmboStream getNextImageLink]];
 }
-
 
 - (void)oneFingerSwipeDown:(UITapGestureRecognizer *)recognizer {
     // Insert your own code to handle swipe left
-    //[self viewImageAtIndex:[[NSNumber alloc] initWithInt:[self.currentIndex integerValue] - 1]];
+    [self viewImageAtURL:[self.tmboStream getPreviousImageLink]];
 }
-
-
-
-
 
 - (void)didReceiveMemoryWarning
 {
@@ -218,8 +185,12 @@
     [super viewWillAppear:animated];
     [self.view setBackgroundColor: [[self class] colorFromHexString:@"333366"]];
     
-    // Initiate get of uploads
-    [self.tmbo getUploadswithDelegate:self ofType:@"image"];
+    // Initiate get of uploads, having it pass back to the tmboStream object,
+    // and add a notification to show the current image once loaded
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(viewCurrentImageOn:)
+                                                 name:@"TMBOStreamLoaded" object:self.tmboStream];
+    [self.tmbo getUploadswithDelegate:self.tmboStream ofType:@"image"];
 }
 
 - (void)viewDidAppear:(BOOL)animated
