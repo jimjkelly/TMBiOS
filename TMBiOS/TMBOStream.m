@@ -18,7 +18,7 @@
 @interface TMBOStream()
 // points to current location in the stream
 @property (nonatomic, strong) NSNumber *index;
-@property (nonatomic, strong) NSArray *stream;
+@property (nonatomic, strong) NSMutableDictionary *stream;
 @end
 
 @implementation TMBOStream
@@ -26,32 +26,74 @@
 @synthesize index = _index;
 @synthesize stream = _stream;
 
-- (NSString *)getLinkToImageAt:(NSNumber *)index {
-    return [[self.stream objectAtIndex:[self.index integerValue]] objectForKey:@"link_file"];
+- (NSNumber *)index {
+    if (_index == nil) _index = [[NSNumber alloc] initWithInt:1];
+    return _index;
 }
 
-- (NSString *)getPreviousImageLink {
+-(id)init {
+    if (self = [super init])
+    {
+        // Load from prefs
+        NSUserDefaults *prefs = [NSUserDefaults standardUserDefaults];
+        NSData *dataRepresentingSavedDict = [prefs objectForKey:@"stream"];
+        if (dataRepresentingSavedDict != nil) {
+            NSDictionary *oldSavedDict = [NSKeyedUnarchiver unarchiveObjectWithData:dataRepresentingSavedDict];
+            if (oldSavedDict != nil)
+                self.stream = [[NSMutableDictionary alloc] initWithDictionary:oldSavedDict];
+            else
+                self.stream = [[NSMutableDictionary alloc] init];
+        }
+        
+        
+    }
+    return self;
+}
+
+-(void)saveStream {
+    NSUserDefaults *prefs = [NSUserDefaults standardUserDefaults];
+    [prefs setObject:[NSKeyedArchiver archivedDataWithRootObject: self.stream] forKey:@"stream"];
+    [prefs synchronize];
+}
+
+-(void)dealloc {
+    [self saveStream];
+}
+
+- (UIImage *)getImageAt:(NSNumber *)index {
+    return [[self.stream objectForKey:[index stringValue]] getImage];
+}
+
+- (UIImage *)getPreviousImage {
     self.index = [NSNumber numberWithInt:[self.index intValue] - 1];
-    return [self getLinkToImageAt:self.index];
+    return [self getImageAt:self.index];
 }
 
-- (NSString *)getNextImageLink {
+- (UIImage *)getNextImage {
     self.index = [NSNumber numberWithInt:[self.index intValue] + 1];
-    return [self getLinkToImageAt:self.index];
+    return [self getImageAt:self.index];
 }
 
-- (NSString *)getCurrentImageLink {
-    return [self getLinkToImageAt:self.index];
+- (UIImage *)getCurrentImage {
+    return [self getImageAt:self.index];
 }
 
 - (void)getUploadsDidFinish:(NSArray *)uploads {
     if ([uploads count] != 0) {
-        NSLog(@"Setting image stream");
-        NSLog(@"Returned from server: %@", uploads);
-        self.stream = uploads;
-        self.index = 0;
+        for (id object in uploads) {
+            if ([self.stream objectForKey:[object objectForKey:@"id"]] == nil) {
+                NSLog(@"Creating poast object from %@", object);
+                [self.stream setObject:[[TMBOPoast alloc] initWithPoastDict:object] forKey:[object objectForKey:@"id"]];
+            } else {
+                NSLog(@"id %@ already exists", [object objectForKey:@"id"]);
+            }
+        }
+        
+        // Notify the ImageViewController that the stream has been loaded
         [[NSNotificationCenter defaultCenter]
          postNotificationName:@"TMBOStreamLoaded" object:self];
+        
+        [self saveStream];
     }
 }
 

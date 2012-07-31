@@ -85,7 +85,7 @@ NSString const *kRETURNFORMAT = @"json";
             _authToken = savedAuthToken;
         }
     }
-    
+    NSLog(@"Auth Token: %@", _authToken);
     return _authToken;
 }
 
@@ -239,7 +239,9 @@ NSString const *kRETURNFORMAT = @"json";
     [self.delegate performSelector: @selector(getUploadsDidFinish:) withObject:result];
 }
 
-- (UIImage *)getUIImageFromFilePath:(NSString *)filePath {
+// Note that filePath in the next two functions refers to the link_file or link_thumb values
+// in a Poast object (although it could be used to get any object on the TMBO server
+- (NSData *)getNSDataFromFilePath:(NSString *)filePath {
     NSString *TMBOSERVER = [[[NSBundle mainBundle] infoDictionary] objectForKey:@"TMBOSERVER"];
     NSString *fullLink = [[NSString alloc] initWithFormat:@"%@%@", TMBOSERVER, filePath];
     NSURL *url = [NSURL URLWithString:fullLink];
@@ -249,7 +251,11 @@ NSString const *kRETURNFORMAT = @"json";
     
     NSURLResponse *response = [[NSURLResponse alloc] init];
     NSError *error = [[NSError alloc] init];
-    return [[UIImage alloc] initWithData:[NSURLConnection sendSynchronousRequest:request returningResponse:&response error:&error]];
+    return [NSURLConnection sendSynchronousRequest:request returningResponse:&response error:&error];
+}
+
+- (UIImage *)getUIImageFromFilePath:(NSString *)filePath {
+    return [[UIImage alloc] initWithData:[self getNSDataFromFilePath:filePath]];
 }
 
 

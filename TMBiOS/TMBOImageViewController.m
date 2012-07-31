@@ -12,8 +12,6 @@
 
 @interface TMBOImageViewController()
 @property (nonatomic, strong) TMBO_API *tmbo;
-@property (nonatomic, strong) NSNumber *currentIndex;
-@property (nonatomic, strong) NSArray *imageStream;
 @property (nonatomic, strong) TMBOStream *tmboStream;
 @end
 
@@ -27,32 +25,7 @@
 // Other helper objects
 @synthesize delegate = _delegate;
 @synthesize tmbo = _tmbo;
-@synthesize currentIndex = _currentIndex;
-@synthesize imageStream = _imageStream;
 @synthesize tmboStream = _tmboStream;
-
-- (void)setCurrentIndex:(NSNumber *)currentIndex {
-    if ([currentIndex intValue] <= 0) {
-        NSLog(@"Setting index to 0, as attempt was made to set to %@", currentIndex);
-        _currentIndex = 0;
-    } else if ([currentIndex intValue] >= [self.imageStream count]) {
-        NSLog(@"Setting index to the imageStream count, as we attempted to set to %@", currentIndex);
-        _currentIndex = [[NSNumber alloc] initWithInt:[self.imageStream count]];
-    } else {
-        NSLog(@"Setting index to %@", currentIndex);
-        _currentIndex = currentIndex;
-    }
-}
-
-- (NSArray *)imageStream {
-    if (!_imageStream) _imageStream = [[NSArray alloc] init];
-    return _imageStream;
-}
-
-- (NSNumber *)currentIndex {
-    if (!_currentIndex) _currentIndex = [[NSNumber alloc] initWithInt:0];
-    return _currentIndex;
-}
 
 - (TMBO_API *)tmbo {
     if (!_tmbo) _tmbo = [[TMBO_API alloc] init];
@@ -129,25 +102,19 @@
 
 - (void)viewCurrentImageOn:(NSNotification *)notification {
     NSLog(@"About to show initial image");
-    [self viewImageAtURL:[self.tmboStream getCurrentImageLink]];
+    [self.image setImage:[self.tmboStream getCurrentImage]];
     [[NSNotificationCenter defaultCenter] removeObserver:self];
-}
-
-- (void)viewImageAtURL:(NSString *)link_file {
-    NSLog(@"Downloading contents of %@", link_file);
-    [self.image setImage:[self.tmbo getUIImageFromFilePath:link_file]];
-    NSLog(@"done.");
 }
 
 - (void)oneFingerSwipeUp:(UITapGestureRecognizer *)recognizer {
     // Insert your own code to handle swipe left
     //[self viewImageAtIndex:[[NSNumber alloc] initWithInt:[self.currentIndex integerValue] + 1]];
-    [self viewImageAtURL:[self.tmboStream getNextImageLink]];
+    [self.image setImage:[self.tmboStream getNextImage]];
 }
 
 - (void)oneFingerSwipeDown:(UITapGestureRecognizer *)recognizer {
     // Insert your own code to handle swipe left
-    [self viewImageAtURL:[self.tmboStream getPreviousImageLink]];
+    [self.image setImage:[self.tmboStream getPreviousImage]];
 }
 
 - (void)didReceiveMemoryWarning

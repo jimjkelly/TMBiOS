@@ -19,5 +19,6 @@
 - (void)getUploadswithDelegate:(id)delegate;
 - (void)getUploadswithDelegate:(id)delegate ofType:(NSString *)uploadType;
 - (void)getCommentswithDelegate:(id)delegate onThread:(NSString *)thread byUser:(NSString *)user;
+- (NSData *)getNSDataFromFilePath:(NSString *)request;
 - (UIImage *)getUIImageFromFilePath:(NSString *)request;
 @end

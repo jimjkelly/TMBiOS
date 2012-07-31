@@ -9,7 +9,7 @@
 #import <UIKit/UIKit.h>
 
 @interface TMBOStream : NSObject
-- (NSString *)getNextImageLink;
-- (NSString *)getPreviousImageLink;
-- (NSString *)getCurrentImageLink;
+- (UIImage *)getNextImage;
+- (UIImage *)getPreviousImage;
+- (UIImage *)getCurrentImage;
 @end
