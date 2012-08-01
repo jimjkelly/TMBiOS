@@ -47,7 +47,7 @@
     if (self = [super init])
     {
         // Uncomment below to clear the stream
-        [self clearStream];
+        //[self clearStream];
         
         // Load from prefs
         NSUserDefaults *prefs = [NSUserDefaults standardUserDefaults];
