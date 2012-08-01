@@ -45,7 +45,6 @@ The following shows an example of the data dictionary:
 @property (nonatomic, strong) NSDictionary *data;
 @property (nonatomic, strong) NSString *local_path;
 @property (nonatomic, assign) BOOL seen;
-- (void)cacheImage;
 @end
 
 @implementation TMBOPoast
@@ -66,7 +65,7 @@ The following shows an example of the data dictionary:
     if (![self.data objectForKey:@"link_file"]) {
         [NSException raise:@"There does not seem to be a link_file value set!" format:@"%@ does not have link_file value set", self];
     }
-    if (!_local_path) _local_path = [NSTemporaryDirectory() stringByAppendingPathComponent: [self.data objectForKey:@"link_file"]];
+    if (!_local_path) _local_path = [[NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) objectAtIndex:0] stringByAppendingPathComponent: [self.data objectForKey:@"link_file"]];
     return _local_path;
 }
 
@@ -101,9 +100,18 @@ The following shows an example of the data dictionary:
 // Eventually you won't be getting a link, but the object data to
 // display, as the Poast will be handling caching the data itself.
 -(UIImage *)getImage {
+    // Since as we add images we currently cache images, we suspect it'll come along
+    // at some point, so we wait.
+    while(![[NSFileManager defaultManager] fileExistsAtPath: self.local_path]) {
+        sleep(1);
+    }
+    
     self.seen = YES;
-    [self cacheImage];
-    return [[UIImage alloc] initWithContentsOfFile:self.local_path];
+    
+    NSData *imageData = [[NSData alloc] initWithContentsOfFile:self.local_path];
+    UIImage *image = [[UIImage alloc] initWithData:imageData];
+    
+    return image;
 }
 
 -(BOOL)hasBeenSeen {
@@ -112,11 +120,29 @@ The following shows an example of the data dictionary:
 }
 
 // cacheImage will cacheImage if it does not exist.  It does nothing if it does.
--(void)cacheImage {    
+-(void)cacheImage {
     if(![[NSFileManager defaultManager] fileExistsAtPath: self.local_path]) {
-        // If the file doesn't exist locally, let's get it
+        NSLog(@"caching %@", [self.local_path lastPathComponent]);
+        NSError *error = nil;
+        
+        // Create the intermediary directories if they don't exist
+        if (![[NSFileManager defaultManager] createDirectoryAtPath:[self.local_path stringByDeletingLastPathComponent]
+									   withIntermediateDirectories:YES
+														attributes:nil
+															 error:&error])
+		{
+			NSLog(@"%s: Create directory error for path %@: %@", __func__, self.local_path, error);
+		}
+        
+        // the file doesn't exist locally, let's get it
         NSData *imageData = [self.tmbo getNSDataFromFilePath:[self.data objectForKey:@"link_file"]];
-        [imageData writeToFile:self.local_path atomically:NO];
+
+        // Now save the data
+        BOOL result = [imageData writeToFile:self.local_path options:NSDataWritingAtomic error:&error];
+        if (!result) {
+            NSLog(@"%s: Failed to write atomically to path %@: %@", __func__, self.local_path, error);
+        }
+        
     }
 }
 

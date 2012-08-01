@@ -19,21 +19,36 @@
 // points to current location in the stream
 @property (nonatomic, strong) NSNumber *index;
 @property (nonatomic, strong) NSMutableDictionary *stream;
+@property (nonatomic, strong) NSOperationQueue *cachingQueue;
 @end
 
 @implementation TMBOStream
 
 @synthesize index = _index;
 @synthesize stream = _stream;
+@synthesize cachingQueue = _cachingQueue;
 
 - (NSNumber *)index {
     if (_index == nil) _index = [[NSNumber alloc] initWithInt:1];
     return _index;
 }
 
+- (NSMutableDictionary *)stream {
+    if (_stream == nil) _stream = [[NSMutableDictionary alloc] init];
+    return _stream;
+}
+
+- (NSOperationQueue *)cachingQueue {
+    if (_cachingQueue == nil) _cachingQueue = [[NSOperationQueue alloc] init];
+    return _cachingQueue;
+}
+
 -(id)init {
     if (self = [super init])
     {
+        // Uncomment below to clear the stream
+        [self clearStream];
+        
         // Load from prefs
         NSUserDefaults *prefs = [NSUserDefaults standardUserDefaults];
         NSData *dataRepresentingSavedDict = [prefs objectForKey:@"stream"];
@@ -41,13 +56,13 @@
             NSDictionary *oldSavedDict = [NSKeyedUnarchiver unarchiveObjectWithData:dataRepresentingSavedDict];
             if (oldSavedDict != nil)
                 self.stream = [[NSMutableDictionary alloc] initWithDictionary:oldSavedDict];
-            else
-                self.stream = [[NSMutableDictionary alloc] init];
-        }
-        
-        
+        } 
     }
     return self;
+}
+
+-(void)dealloc {
+    [self saveStream];
 }
 
 -(void)saveStream {
@@ -56,8 +71,11 @@
     [prefs synchronize];
 }
 
--(void)dealloc {
-    [self saveStream];
+// NOTE: this clears the local stream, may mostly be useful for development work
+-(void)clearStream {
+    NSUserDefaults *prefs = [NSUserDefaults standardUserDefaults];
+    [prefs removeObjectForKey:@"stream"];
+    [prefs synchronize];
 }
 
 - (UIImage *)getImageAt:(NSNumber *)index {
@@ -83,7 +101,12 @@
         for (id object in uploads) {
             if ([self.stream objectForKey:[object objectForKey:@"id"]] == nil) {
                 NSLog(@"Creating poast object from %@", object);
-                [self.stream setObject:[[TMBOPoast alloc] initWithPoastDict:object] forKey:[object objectForKey:@"id"]];
+                TMBOPoast *newPoast = [[TMBOPoast alloc] initWithPoastDict:object];
+                
+                [self.cachingQueue addOperation:[[NSInvocationOperation alloc] initWithTarget:newPoast
+                                                                                     selector:@selector(cacheImage) object:nil]];
+                
+                [self.stream setObject:newPoast forKey:[object objectForKey:@"id"]];
             } else {
                 NSLog(@"id %@ already exists", [object objectForKey:@"id"]);
             }

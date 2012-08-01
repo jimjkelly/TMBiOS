@@ -6,7 +6,7 @@
 //  Copyright (c) 2012 PonySoft. All rights reserved.
 //
 
-#import <UIKit/UIKit.h>
+#import <Foundation/Foundation.h>
 
 @interface TMBOStream : NSObject
 - (UIImage *)getNextImage;
