@@ -43,6 +43,7 @@ The following shows an example of the data dictionary:
 @interface TMBOPoast()
 @property (nonatomic, strong) TMBO_API *tmbo;
 @property (nonatomic, strong) NSDictionary *data;
+@property (nonatomic, strong) NSDictionary *comments;
 @property (nonatomic, strong) NSString *local_path;
 @property (nonatomic, assign) BOOL seen;
 @end
@@ -114,6 +115,10 @@ The following shows an example of the data dictionary:
     return image;
 }
 
+-(NSNumber *)getID {
+    return [self.data objectForKey:@"id"];
+}
+
 -(BOOL)hasBeenSeen {
     NSLog(@"Checking whether %@ has been seen: %@", [self.data objectForKey:@"filename"], self.seen ? @"YES" : @"NO");
     return self.seen;
@@ -144,6 +149,15 @@ The following shows an example of the data dictionary:
         }
         
     }
+}
+
+-(void)cacheComments {
+    [self.tmbo getCommentswithDelegate:self onThread:[self.data objectForKey:@"id"] byUser:@""];
+}
+
+-(void)getCommentsonThreadbyUserDidFinish:(NSDictionary *)result {
+    NSLog(@"got comemnts");
+    NSLog(@"%@", result);
 }
 
 @end

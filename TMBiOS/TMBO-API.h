@@ -12,7 +12,6 @@
 @property (nonatomic, strong) NSString *authToken;
 @property (nonatomic, assign, getter=shouldShowTMBO) BOOL showTMBO;
 @property (nonatomic, assign, getter=shouldShowNSFW) BOOL showNSFW;
-- (NSNumber *)getFileID:(NSDictionary *)givenUpload;
 - (void)vote:(NSString *)vote onUpload:(NSString *)uploadID;
 - (void)loginWithUsername:(NSString *)username andPassowrd:(NSString *)password withDelegate:(id)delegate;
 - (void)logout;

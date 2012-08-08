@@ -20,6 +20,7 @@
 @property (nonatomic, strong) NSNumber *index;
 @property (nonatomic, strong) NSMutableDictionary *stream;
 @property (nonatomic, strong) NSOperationQueue *cachingQueue;
+@property (nonatomic, strong) NSOperationQueue *commentQueue;
 @end
 
 @implementation TMBOStream
@@ -27,6 +28,7 @@
 @synthesize index = _index;
 @synthesize stream = _stream;
 @synthesize cachingQueue = _cachingQueue;
+@synthesize commentQueue = _commentQueue;
 
 - (NSNumber *)index {
     if (_index == nil) _index = [[NSNumber alloc] initWithInt:1];
@@ -43,11 +45,16 @@
     return _cachingQueue;
 }
 
+- (NSOperationQueue *)commentQueue {
+    if (_commentQueue == nil) _commentQueue = [[NSOperationQueue alloc] init];
+    return _commentQueue;
+}
+
 -(id)init {
     if (self = [super init])
     {
         // Uncomment below to clear the stream
-        //[self clearStream];
+        [self clearStream];
         
         // Load from prefs
         NSUserDefaults *prefs = [NSUserDefaults standardUserDefaults];
@@ -96,6 +103,10 @@
     return [self getImageAt:self.index];
 }
 
+- (NSNumber *)getCurrentID {
+    return [[self.stream objectForKey:[self.index stringValue]] getID];
+}
+
 - (void)getUploadsDidFinish:(NSArray *)uploads {
     if ([uploads count] != 0) {
         for (id object in uploads) {
@@ -105,6 +116,9 @@
                 
                 [self.cachingQueue addOperation:[[NSInvocationOperation alloc] initWithTarget:newPoast
                                                                                      selector:@selector(cacheImage) object:nil]];
+                
+                [self.commentQueue addOperation:[[NSInvocationOperation alloc] initWithTarget:newPoast
+                                                                                     selector:@selector(cacheComments) object:nil]];
                 
                 [self.stream setObject:newPoast forKey:[object objectForKey:@"id"]];
             } else {

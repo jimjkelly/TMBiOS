@@ -12,4 +12,5 @@
 - (UIImage *)getNextImage;
 - (UIImage *)getPreviousImage;
 - (UIImage *)getCurrentImage;
+- (NSNumber *)getCurrentID;
 @end

@@ -11,6 +11,7 @@
 @interface TMBOPoast : NSObject <NSCoding>
 -(id)initWithPoastDict:(NSDictionary *)poastDict;
 -(UIImage *)getImage;
+-(NSNumber *)getID;
 -(void)cacheImage;
 -(BOOL)hasBeenSeen;
 @end

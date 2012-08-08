@@ -101,6 +101,7 @@ NSString const *kRETURNFORMAT = @"json";
     return [[NSString alloc] initWithFormat:kUSERAGENT, [[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleShortVersionString"],[[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleVersion"], [[UIDevice currentDevice] model], [[UIDevice currentDevice] systemName], [[UIDevice currentDevice] systemVersion]];
 }
 
+// I don't think the caller gets login failures here.
 - (void)vote:(NSString *)vote onUpload:(NSString *)uploadID{
     NSString *voteString = @"novote";
     NSString *subscribe = @"0";
@@ -116,9 +117,6 @@ NSString const *kRETURNFORMAT = @"json";
         // This should probably throw an error maybe?
     }
     
-    NSLog(@"voteString: %@", voteString);
-    NSLog(@"subscribe: %@", subscribe);
-    
     NSString *TMBOSERVER = [[[NSBundle mainBundle] infoDictionary] objectForKey:@"TMBOSERVER"];
     
     NSString *urlString = [[NSString alloc] initWithFormat:@"%@%@/postcomment.php?fileid=%@&vote=%@&subscribe=%@", TMBOSERVER, kAPIURI, uploadID, voteString, subscribe];
@@ -132,21 +130,24 @@ NSString const *kRETURNFORMAT = @"json";
 }
 
 - (void)getCommentswithDelegate:(id)delegate onThread:(NSString *)thread byUser:(NSString *)user {
+    self.delegate = delegate;
+    
     NSString *TMBOSERVER = [[[NSBundle mainBundle] infoDictionary] objectForKey:@"TMBOSERVER"];
-    NSString *urlString = [[NSString alloc] initWithFormat:@"%@%@/getcomments.%@?userid=%@&thread=%@", TMBOSERVER, kAPIURI, kRETURNFORMAT, user, thread];
+    NSString *urlString = [[NSString alloc] initWithFormat:@"%@%@/getcomments.%@?token=%@&userid=%@&thread=%@", TMBOSERVER, kAPIURI, kRETURNFORMAT, self.authToken, user, thread];
+    
+    NSLog(@"urlString: %@", urlString);
     NSURL *url = [NSURL URLWithString:urlString];
-    NSMutableURLRequest *request = [[NSMutableURLRequest alloc] initWithURL:url];
-    [request setValue:[self getUserAgent] forHTTPHeaderField:@"User-Agent"];
-    HTTPResource *httpResource = [[HTTPResource alloc] init];
-    [httpResource getDictionaryFromURL:request withStringSelector:@"getCommentsonThreadbyUserResult:" andDelegate:self];
+    NSError *error = nil;
+    NSData *data = [NSData dataWithContentsOfURL:url];
+    NSLog(@"%@", [[NSString alloc] initWithData:data encoding:NSASCIIStringEncoding]);
+    NSArray *jsonObjects = [NSJSONSerialization JSONObjectWithData:data options:nil error:&error];
+    NSLog(@"json: %@", jsonObjects);
+    
+    NSLog(@"error: %@",error);
 }
 
-- (void)getCommentsonThreadbyUserResult:(NSDictionary *) result {
-    [self.delegate performSelector:@selector(getCommentsonThreadbyUserDidFinish) withObject:result];
-}
-
-- (NSNumber *)getFileID:(NSDictionary *)givenUpload {
-    return [givenUpload objectForKey:@"id"];
+- (void)getCommentsonThreadbyUserResult:(NSDictionary *)ohai {
+    NSLog(@"wtf");
 }
 
 - (void)loginWithUsername:(NSString *)username andPassowrd:(NSString *)password withDelegate:(id)delegate {
@@ -184,19 +185,9 @@ NSString const *kRETURNFORMAT = @"json";
 - (void)getUploadswithDelegate:(id)delegate {
     self.delegate = delegate;
     
-    NSString *tmboURLArg = [[NSString alloc] initWithString:@""];
-    if (!self.shouldShowTMBO) {
-        tmboURLArg = [[NSString alloc] initWithString:@"&tmbo=0"];
-    }
-    
-    NSString *nsfwURLArg = [[NSString alloc] initWithString:@""];
-    if (!self.shouldShowNSFW) {
-        nsfwURLArg = [[NSString alloc] initWithString:@"&nsfw=0"];
-    }
-    
     NSString *TMBOSERVER = [[[NSBundle mainBundle] infoDictionary] objectForKey:@"TMBOSERVER"];
     
-    NSString *urlString = [[NSString alloc] initWithFormat:@"%@%@/getuploads.%@?token=%@%@%@", TMBOSERVER, kAPIURI, kRETURNFORMAT, self.authToken, tmboURLArg, nsfwURLArg];
+    NSString *urlString = [[NSString alloc] initWithFormat:@"%@%@/getuploads.%@?token=%@", TMBOSERVER, kAPIURI, kRETURNFORMAT, self.authToken];
     
     NSLog(@"urlString: %@", urlString);
     

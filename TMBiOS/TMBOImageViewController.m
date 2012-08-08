@@ -84,11 +84,11 @@
 }
 
 - (IBAction)voteOnImage:(UIButton *)sender {    
-    //NSString *vote = sender.currentTitle;
-    //NSNumber *fileID = [self.tmbo getFileID:[self.imageStream objectAtIndex:[self.currentIndex integerValue]]];
+    NSString *vote = sender.currentTitle;
+    NSNumber *fileID = [self.tmboStream getCurrentID];
     
-    //[self disableVoteButtons:vote];
-    //[self.tmbo vote:vote onUpload:[[NSString alloc] initWithFormat:@"%d", [fileID intValue]]];
+    [self disableVoteButtons:vote];
+    [self.tmbo vote:vote onUpload:[[NSString alloc] initWithFormat:@"%d", [fileID intValue]]];
 }
 
 - (void)loginFailed {
