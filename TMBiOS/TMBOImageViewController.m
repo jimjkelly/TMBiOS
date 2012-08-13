@@ -21,16 +21,15 @@
 @synthesize tIB = _tIB;
 @synthesize tIG = _tIG;
 @synthesize image = _image;
+@synthesize comments = _comments;
 
 // Other helper objects
 @synthesize delegate = _delegate;
-@synthesize tmbo = _tmbo;
 @synthesize tmboStream = _tmboStream;
 
-- (TMBO_API *)tmbo {
-    if (!_tmbo) _tmbo = [[TMBO_API alloc] init];
-    return _tmbo;
-}
+const float kBUTTON_ALPHA_ENABLED = 0.6f;
+const float kBUTTON_ALPHA_DISABLED = 0.2f;
+const float kBUTTON_ALPHA_INVISIBLE = 0.0f;
 
 - (TMBOStream *)tmboStream {
     if (!_tmboStream) _tmboStream = [[TMBOStream alloc] init];
@@ -40,9 +39,9 @@
 - (void) enableVoteButtons {
     // Not sure why we'd use this necessarily, but hey, why not
     [self.tIG setEnabled:YES];
-    [self.tIG setAlpha:1.0];
+    [self.tIG setAlpha:kBUTTON_ALPHA_ENABLED];
     [self.tIB setEnabled:YES];
-    [self.tIB setAlpha:1.0];
+    [self.tIB setAlpha:kBUTTON_ALPHA_ENABLED];
 }
 
 - (void) disableVoteButtons:(NSString *) showVote {
@@ -50,15 +49,25 @@
     [self.tIB setEnabled:NO];
     
     if (!showVote) {
-        [self.tIG setAlpha:0.4];
-        [self.tIB setAlpha:0.4];
+        [self.tIG setAlpha:kBUTTON_ALPHA_DISABLED];
+        [self.tIB setAlpha:kBUTTON_ALPHA_DISABLED];
     } else if ([showVote isEqualToString:@"-"]) {
-        [self.tIG setAlpha:0.0];
-        [self.tIB setAlpha:0.4];        
+        [self.tIG setAlpha:kBUTTON_ALPHA_INVISIBLE];
+        [self.tIB setAlpha:kBUTTON_ALPHA_DISABLED];
     } else if ([showVote isEqualToString:@"+"]) {
-        [self.tIG setAlpha:0.4];
-        [self.tIB setAlpha:0.0];
+        [self.tIG setAlpha:kBUTTON_ALPHA_DISABLED];
+        [self.tIB setAlpha:kBUTTON_ALPHA_INVISIBLE];
     }
+}
+
+- (void) enableCommentButton {
+    [self.comments setEnabled:YES];
+    [self.comments setAlpha:kBUTTON_ALPHA_ENABLED];
+}
+
+- (void) disableCommentButton {
+    [self.comments setEnabled:NO];
+    [self.comments setAlpha:kBUTTON_ALPHA_DISABLED];
 }
 
 - (IBAction)logoutPressed:(UIButton *)sender {
@@ -91,6 +100,11 @@
     [self.tmbo vote:vote onUpload:[[NSString alloc] initWithFormat:@"%d", [fileID intValue]]];
 }
 
+- (IBAction)viewComments:(UIButton *)sender {
+    NSLog(@"I'd like to view comments!");
+    [self performSegueWithIdentifier:@"ImagesToComments" sender:self];
+}
+
 - (void)loginFailed {
     // do stuffs for a login failure.  What's a login failure doing here?
     // if our authToken is invalidated, this could happpen.  Kick us
@@ -102,19 +116,44 @@
 
 - (void)viewCurrentImageOn:(NSNotification *)notification {
     NSLog(@"About to show initial image");
+
     [self.image setImage:[self.tmboStream getCurrentImage]];
+    [self setCommentButton];
+    [self enableVoteButtons];
+
     [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
+- (void)setCommentButton {
+    NSNumber *numOfComments = [self.tmboStream getNumOfComments];
+    
+    if ([numOfComments intValue]!= 0) {
+        NSLog(@"Number of comments: %@", numOfComments);
+        [self.comments setTitle:[numOfComments stringValue] forState:UIControlStateNormal]; // To set the title
+        [self enableCommentButton]; // To toggle enabled / disabled
+    } else {
+        [self.comments setTitle:@"0" forState:UIControlStateNormal];
+        [self disableCommentButton];
+    }
+}
+
 - (void)oneFingerSwipeUp:(UITapGestureRecognizer *)recognizer {
-    // Insert your own code to handle swipe left
-    //[self viewImageAtIndex:[[NSNumber alloc] initWithInt:[self.currentIndex integerValue] + 1]];
-    [self.image setImage:[self.tmboStream getNextImage]];
+    UIImage *nextImage = [self.tmboStream getNextImage];
+    
+    if (nextImage != nil) {
+        [self.image setImage:nextImage];
+        [self setCommentButton];
+        [self enableVoteButtons];
+    } // We should probably have some UI magic to indicate the end of the stream
 }
 
 - (void)oneFingerSwipeDown:(UITapGestureRecognizer *)recognizer {
-    // Insert your own code to handle swipe left
-    [self.image setImage:[self.tmboStream getPreviousImage]];
+    UIImage *previousImage = [self.tmboStream getPreviousImage];
+    if (previousImage != nil) {
+        [self.image setImage:previousImage];
+        [self setCommentButton];
+        [self enableVoteButtons];
+    } // We should probably have some UI magic to indicate the end of the stream
 }
 
 - (void)didReceiveMemoryWarning
@@ -158,6 +197,7 @@
                                              selector:@selector(viewCurrentImageOn:)
                                                  name:@"TMBOStreamLoaded" object:self.tmboStream];
     [self.tmbo getUploadswithDelegate:self.tmboStream ofType:@"image"];
+    [self.comments setEnabled:NO];
 }
 
 - (void)viewDidAppear:(BOOL)animated

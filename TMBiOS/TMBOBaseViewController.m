@@ -7,10 +7,8 @@
 //
 
 #import "TMBOBaseViewController.h"
-#import "TMBO-API.h"
 
 @interface TMBOBaseViewController()
-@property (nonatomic, strong) TMBO_API *tmbo;
 @end
 
 @implementation TMBOBaseViewController

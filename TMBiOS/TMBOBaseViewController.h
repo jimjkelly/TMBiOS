@@ -7,7 +7,9 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "TMBO-API.h"
 
 @interface TMBOBaseViewController : UIViewController
+@property (nonatomic, strong) TMBO_API *tmbo;
 + (UIColor *) colorFromHexString: (NSString *) hex;
 @end

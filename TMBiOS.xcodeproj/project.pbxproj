@@ -29,6 +29,7 @@
 		5D8F9845156AF5DD00081C26 /* README.md in Resources */ = {isa = PBXBuildFile; fileRef = 5D8F9844156AF5DC00081C26 /* README.md */; };
 		5D8F9848156AF74600081C26 /* TMBOStream.m in Sources */ = {isa = PBXBuildFile; fileRef = 5D8F9847156AF74600081C26 /* TMBOStream.m */; };
 		5D8F984A156D997500081C26 /* TMBiOS-Info-DEV.plist in Resources */ = {isa = PBXBuildFile; fileRef = 5D8F9849156D997500081C26 /* TMBiOS-Info-DEV.plist */; };
+		5DEA863215D97C8A0015050C /* TMBOCommentsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5DEA863115D97C8A0015050C /* TMBOCommentsViewController.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -67,6 +68,8 @@
 		5D8F9846156AF74500081C26 /* TMBOStream.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TMBOStream.h; sourceTree = "<group>"; };
 		5D8F9847156AF74600081C26 /* TMBOStream.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TMBOStream.m; sourceTree = "<group>"; };
 		5D8F9849156D997500081C26 /* TMBiOS-Info-DEV.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "TMBiOS-Info-DEV.plist"; sourceTree = "<group>"; };
+		5DEA863015D97C8A0015050C /* TMBOCommentsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TMBOCommentsViewController.h; sourceTree = "<group>"; };
+		5DEA863115D97C8A0015050C /* TMBOCommentsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TMBOCommentsViewController.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -121,6 +124,8 @@
 				5D8F983A15647BFC00081C26 /* TMBOBaseViewController.m */,
 				5D8F983B15647BFC00081C26 /* TMBOImageViewController.h */,
 				5D8F983C15647BFC00081C26 /* TMBOImageViewController.m */,
+				5DEA863015D97C8A0015050C /* TMBOCommentsViewController.h */,
+				5DEA863115D97C8A0015050C /* TMBOCommentsViewController.m */,
 				5D8F9846156AF74500081C26 /* TMBOStream.h */,
 				5D8F9847156AF74600081C26 /* TMBOStream.m */,
 				5D228F6715C468B000B1E1F5 /* TMBOPoast.h */,
@@ -244,6 +249,7 @@
 				5D8F98431564869C00081C26 /* TMBO-API.m in Sources */,
 				5D8F9848156AF74600081C26 /* TMBOStream.m in Sources */,
 				5D228F6915C468B000B1E1F5 /* TMBOPoast.m in Sources */,
+				5DEA863215D97C8A0015050C /* TMBOCommentsViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

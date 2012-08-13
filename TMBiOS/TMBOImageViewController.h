@@ -8,13 +8,12 @@
 
 #import <UIKit/UIKit.h>
 #import "TMBOBaseViewController.h"
-#import "TMBO-API.h"
 
 @interface TMBOImageViewController : TMBOBaseViewController
 @property (weak, nonatomic) IBOutlet UIImageView *image;
 @property (weak, nonatomic) IBOutlet UIButton *tIG;
 @property (weak, nonatomic) IBOutlet UIButton *tIB;
-//@property (nonatomic, retain) TMBOStream *stream;
+@property (weak, nonatomic) IBOutlet UIButton *comments;
 @property (nonatomic, assign) id delegate;
 @end
 

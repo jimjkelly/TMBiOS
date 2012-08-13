@@ -90,13 +90,21 @@
 }
 
 - (UIImage *)getPreviousImage {
-    self.index = [NSNumber numberWithInt:[self.index intValue] - 1];
-    return [self getImageAt:self.index];
+    if ([self.index intValue] == 0) {
+        return nil; // We're at the beginning, return nil
+    } else {
+        self.index = [NSNumber numberWithInt:[self.index intValue] - 1];
+        return [self getImageAt:self.index];
+    }
 }
 
 - (UIImage *)getNextImage {
-    self.index = [NSNumber numberWithInt:[self.index intValue] + 1];
-    return [self getImageAt:self.index];
+    if ([self.index intValue] == [self.stream count]) {
+        return nil; // We're at the end, return nil
+    } else {
+        self.index = [NSNumber numberWithInt:[self.index intValue] + 1];
+        return [self getImageAt:self.index];
+    }
 }
 
 - (UIImage *)getCurrentImage {
@@ -105,6 +113,10 @@
 
 - (NSNumber *)getCurrentID {
     return [[self.stream objectForKey:[self.index stringValue]] getID];
+}
+
+- (NSNumber *)getNumOfComments {
+    return [[self.stream objectForKey:[self.index stringValue]] getNumberOfComments];
 }
 
 - (void)getUploadsDidFinish:(NSArray *)uploads {

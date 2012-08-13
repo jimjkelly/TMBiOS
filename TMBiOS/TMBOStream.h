@@ -13,4 +13,5 @@
 - (UIImage *)getPreviousImage;
 - (UIImage *)getCurrentImage;
 - (NSNumber *)getCurrentID;
+- (NSNumber *)getNumOfComments;
 @end

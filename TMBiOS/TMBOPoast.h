@@ -12,6 +12,8 @@
 -(id)initWithPoastDict:(NSDictionary *)poastDict;
 -(UIImage *)getImage;
 -(NSNumber *)getID;
+-(NSNumber *)getNumberOfComments;
 -(void)cacheImage;
+-(void)cacheComments;
 -(BOOL)hasBeenSeen;
 @end

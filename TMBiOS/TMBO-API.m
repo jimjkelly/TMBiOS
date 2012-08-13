@@ -85,7 +85,6 @@ NSString const *kRETURNFORMAT = @"json";
             _authToken = savedAuthToken;
         }
     }
-    NSLog(@"Auth Token: %@", _authToken);
     return _authToken;
 }
 
@@ -129,25 +128,21 @@ NSString const *kRETURNFORMAT = @"json";
     [httpResource postToURL:request];
 }
 
-- (void)getCommentswithDelegate:(id)delegate onThread:(NSString *)thread byUser:(NSString *)user {
-    self.delegate = delegate;
-    
+- (NSArray *)getCommentsonThread:(NSString *)thread byUser:(NSString *)user {
     NSString *TMBOSERVER = [[[NSBundle mainBundle] infoDictionary] objectForKey:@"TMBOSERVER"];
     NSString *urlString = [[NSString alloc] initWithFormat:@"%@%@/getcomments.%@?token=%@&userid=%@&thread=%@", TMBOSERVER, kAPIURI, kRETURNFORMAT, self.authToken, user, thread];
     
-    NSLog(@"urlString: %@", urlString);
     NSURL *url = [NSURL URLWithString:urlString];
-    NSError *error = nil;
     NSData *data = [NSData dataWithContentsOfURL:url];
-    NSLog(@"%@", [[NSString alloc] initWithData:data encoding:NSASCIIStringEncoding]);
-    NSArray *jsonObjects = [NSJSONSerialization JSONObjectWithData:data options:nil error:&error];
-    NSLog(@"json: %@", jsonObjects);
     
-    NSLog(@"error: %@",error);
-}
-
-- (void)getCommentsonThreadbyUserResult:(NSDictionary *)ohai {
-    NSLog(@"wtf");
+    NSError *error = nil;
+    NSArray *jsonObjects = [NSJSONSerialization JSONObjectWithData:data options:nil error:&error];
+    
+    if (jsonObjects == nil) {
+        NSLog(@"error: %@",error);
+    }
+    
+    return jsonObjects;
 }
 
 - (void)loginWithUsername:(NSString *)username andPassowrd:(NSString *)password withDelegate:(id)delegate {

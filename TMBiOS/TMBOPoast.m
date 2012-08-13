@@ -43,7 +43,7 @@ The following shows an example of the data dictionary:
 @interface TMBOPoast()
 @property (nonatomic, strong) TMBO_API *tmbo;
 @property (nonatomic, strong) NSDictionary *data;
-@property (nonatomic, strong) NSDictionary *comments;
+@property (nonatomic, strong) NSArray *comments;
 @property (nonatomic, strong) NSString *local_path;
 @property (nonatomic, assign) BOOL seen;
 @end
@@ -53,6 +53,7 @@ The following shows an example of the data dictionary:
 @synthesize data = _data;
 @synthesize seen = _seen;
 @synthesize local_path = _local_path;
+@synthesize comments = _comments;
 
 - (TMBO_API *)tmbo {
     if (!_tmbo) _tmbo = [[TMBO_API alloc] init];
@@ -119,6 +120,14 @@ The following shows an example of the data dictionary:
     return [self.data objectForKey:@"id"];
 }
 
+-(NSNumber *)getNumberOfComments {
+    if (self.comments != nil) {
+        return [[NSNumber alloc] initWithInt:[self.comments count]];
+    } else { // Fall back on the metadata we we got from the server
+        return [self.data objectForKey:@"comments"];
+    }
+}
+
 -(BOOL)hasBeenSeen {
     NSLog(@"Checking whether %@ has been seen: %@", [self.data objectForKey:@"filename"], self.seen ? @"YES" : @"NO");
     return self.seen;
@@ -152,12 +161,8 @@ The following shows an example of the data dictionary:
 }
 
 -(void)cacheComments {
-    [self.tmbo getCommentswithDelegate:self onThread:[self.data objectForKey:@"id"] byUser:@""];
+    self.comments = [self.tmbo getCommentsonThread:[self.data objectForKey:@"id"] byUser:@""];
 }
 
--(void)getCommentsonThreadbyUserDidFinish:(NSDictionary *)result {
-    NSLog(@"got comemnts");
-    NSLog(@"%@", result);
-}
 
 @end
